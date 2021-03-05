@@ -1,0 +1,16 @@
+{
+  "name": "e-commerce-app",
+  "version": "1.0.0",
+  "description": "E-commerece / REST API app developed as part of the full-stack engineer course on Codecademy.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MWillis10231",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pg": "^8.5.1"
+  }
+}
