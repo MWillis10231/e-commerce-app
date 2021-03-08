@@ -7,6 +7,9 @@ module.exports = router
 
 // Basic routes follow = will need some error handling etc. if they work
 // we also need to write IF EXISTS into all of our POSTGRES queries right?
+// Check passwords => do they know them, prompt?
+// Handle errors
+// Handle edge-cases
 
 // GET ALL customers
 
@@ -23,12 +26,26 @@ router.get('/:id', async (req, res) => {
     res.send(rows[0])
 })
 
-// POST add a new customer // is this going to to be the login method?
+// POST register a new customer > through sign-up
+
+router.post('/register', async (req, res) => {
+    const firstName = req.params.first_name
+    const lastName = req.params.last_name
+    const country = req.params.country
+    const countryId = await db.query('SELECT country_id FROM countries WHERE country = $1', [country])
+    // we need to send that we've updated the database / anything else? 
+    // does this result need to be a const?
+    const result = await db.query('INSERT INTO customers (first_name, last_name, country_id) values ($1, $2, $3)', [firstName, lastName, countryId])
+    res.send(`Registered the customer ${firstName} ${lastName} who lives in ${country} which has a country ID of ${countryId}`)
+})
+
+// POST add a new customer // not the sign-up method but the admin way of adding // do we need this?
 
 router.post('/:id', async (req, res) => {
     const { id } = req.params
     const firstName = req.params.first_name
     const lastName = req.params.last_name
+    const password = req.params.password
     const country = req.params.country
     const countryId = await db.query('SELECT country_id FROM countries WHERE country = $1', [country])
     // we need to send that we've updated the database / anything else? 
@@ -39,7 +56,7 @@ router.post('/:id', async (req, res) => {
 
 // PUT update a customer's info by their id
 
-router.post('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params
     const firstName = req.params.first_name
     const lastName = req.params.last_name

@@ -1,6 +1,7 @@
 const customers = require('./customer')
 const products = require('./products')
 const cart = require('./cart')
+const orders = require('./orders')
 
 module.exports = app => {
     app.get('/', (req, res) => {
@@ -9,6 +10,7 @@ module.exports = app => {
     app.use('/customers', customers)
     app.use('/products', products)
     app.use('/cart', cart)
+    app.use('/orders', orders)
 }
 
 
