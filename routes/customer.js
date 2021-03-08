@@ -8,6 +8,13 @@ module.exports = router
 // Basic routes follow = will need some error handling etc. if they work
 // we also need to write IF EXISTS into all of our POSTGRES queries right?
 
+// GET ALL customers
+
+router.get('/', async (req, res) => {
+    const results = await db.query('SELECT * FROM customers')
+    res.send(results)
+})
+
 // GET a customer by their id
 
 router.get('/:id', async (req, res) => {
@@ -16,7 +23,7 @@ router.get('/:id', async (req, res) => {
     res.send(rows[0])
 })
 
-// POST add a new customer
+// POST add a new customer // is this going to to be the login method?
 
 router.post('/:id', async (req, res) => {
     const { id } = req.params
@@ -44,7 +51,8 @@ router.post('/:id', async (req, res) => {
     res.send(`Updated the customer ${firstName} ${lastName} with the id ${id} who lives in ${country} which has a country ID of ${countryId}`)
 })
 
-// DELETE a customer by their id (do we need to check if ADMIN or something?)
+// DELETE a customer by their id 
+//we need to check if ADMIN
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params
