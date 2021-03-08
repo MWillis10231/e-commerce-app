@@ -1,15 +1,13 @@
 const { Pool } = require('pg')
-/* require('dotenv').config();
-
-console.log(process.env) */
+require('dotenv').config();
 
 const pool = new Pool(
     {
-        user: 'e_commerce',
-        host: 'localhost',
-        database: 'E-Commerce',
-        password: 'secretpassword',
-        port: 5432,
+        user: process.env.DB_USER,
+        host: process.env.DB_HOST,
+        database: process.env.DB_NAME,
+        password: process.env.DB_PASS,
+        port: process.env.DB_PORT,
     }
 )
 
@@ -22,7 +20,7 @@ module.exports = {
       return res
     },
 
-    
+
     async getClient() {
       const client = await pool.connect()
       const query = client.query
