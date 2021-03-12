@@ -20,6 +20,6 @@ router.get('/:customerId', async (req, res) => {
 router.get('/:customerId/:orderId', async (req, res) => {
     const { customerId } = req.params
     const { orderId } = req.params
-    const { rows } = await db.query('SELECT * FROM products WHERE customer_id = $1 AND order_id = $2', [customerId, orderId])
+    const { rows } = await db.query('SELECT * FROM orders WHERE customer_id = $1 AND order_id = $2', [customerId, orderId])
     res.send(rows[0])
 })
