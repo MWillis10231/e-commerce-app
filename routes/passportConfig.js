@@ -29,16 +29,19 @@ module.exports = function(passport) {
     // Serialise / Unserialise users in and out of the session
 
 // used to serialize the user for the session
-  passport.serializeUser(function(user, done) {
-		done(null, user.id);
+  passport.serializeUser(function(customer, done) {
+		done(null, customer);
   });
 
   // used to deserialize the user - check this
-  passport.deserializeUser(function(id, done) {
-		db.query("SELECT * from USERS where id = $1", [+id,function(err,rows){	
-			done(err, rows[0]);
-		}]);
+  passport.deserializeUser(async function(customer, done) {
+    try {
+      console.log(customer)
+      const user = await db.query("SELECT * FROM customers WHERE username = $1", [customer])
+      done(null, user)
+    } catch(error) {
+      console.log(error)
+    }
   }); 
-
 }
 

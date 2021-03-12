@@ -8,6 +8,9 @@ module.exports = app => {
     app.get('/', (req, res) => {
         res.send('Hello World! This works!')
       })
+    app.get('/success', (req, res) => {
+        res.send('Successful login!')
+      })
     app.use('/customers', customers)
     app.use('/products', products)
     app.use('/cart', cart)
