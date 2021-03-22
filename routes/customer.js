@@ -13,11 +13,44 @@ module.exports = router
 
 // In reality we'd probably hide the errors and not log them to the console for database security
 
-// GET ALL customers
+//Swagger Definitions
+/**
+ * @swagger
+ * definitions:
+ *   Customer:
+ *     properties:
+ *       first_name:
+ *         type: varchar
+ *       last_name:
+ *         type: varchar
+ *       country_id:
+ *         type: integer
+ *       username:
+ *         type: varchar
+ *       email:
+ *         type: varchar
+ */
 
-router.get('/', async (req, res) => {
+// GET ALL customers (we should put this behind some sort of admin thing)
+
+/**
+ * @swagger
+ * /api/customers/all:
+ *   get:
+ *     tags:
+ *       - Customers
+ *     description: Returns all customers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: An array of customers
+ *         schema:
+ *           $ref: '#/definitions/Customer'
+ */
+router.get('/all', async (req, res) => {
     try {
-        const results = await db.query('SELECT * FROM customers')
+        const results = await db.query('SELECT first_name, last_name, country_id, username, email FROM customers')
         res.send(results.rows)
     } catch(error) {
         console.log(error)
@@ -28,49 +61,137 @@ router.get('/', async (req, res) => {
 
 // GET a customer by their id
 
+/**
+ * @swagger
+ * /api/customers/id:
+ *   get:
+ *     tags:
+ *       - Customers
+ *     description: Returns a single customer
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: A single customer
+ *         schema:
+ *           $ref: '#/definitions/Customer'
+ */
+
 router.get('/:id', async (req, res) => {
     try {
+        let currentUser = 'none'
+        if (req.session.passport != undefined) {
+            currentUser = req.session.passport.user
+        }
         const { id } = req.params
-        const results = await db.query('SELECT * FROM customers WHERE customer_id = $1', [id])
+        // Only display the user information for the customer themselves, do not show other customer info (you could show less?)
+        const isCorrectCustomer = await db.query('SELECT username FROM customers WHERE customer_id = $1', [id])
+        if (currentUser !== isCorrectCustomer.rows[0].username) {
+            throw('Permission denied');
+        }
+
+        const results = await db.query('SELECT customers.first_name, customers.last_name, customers.username, countries.name, customers.email FROM customers, countries WHERE customers.country_id = countries.country_id AND  customer_id = $1', [id])
         if (results.rows[0]) {
             res.send(results.rows[0])
         } else {
-            res.send('This person could not be found. Sorry!')
+            throw('Permission denied');
         }
         
     } catch (error) {
-        console.log(error)
+        if (error !== undefined) {
+            console.log(error)
+        }
         res.send('This person could not be found. Sorry!')
     }
 })
 
 // POST register a new customer > through sign-up 
-// Needs a way of having a password that's hashed using passport.js
+
+/**
+ * @swagger
+ * /api/customers/register:
+ *   post:
+ *     tags:
+ *       - Customers
+ *     description: Creates a new customer
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: customer
+ *         description: Customer object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Customer'
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ */
 
 router.post('/register/', async (req, res) => {
     try {
-        const { firstName } = req.query
-        const { lastName } = req.query
-        const { countryId } = req.query
-        const { username } = req.query
-        const { password } = req.query
-        const { email } = req.query
+        // get the body and create consts
+        const { firstName } = req.body
+        const { lastName } = req.body
+        const { username } = req.body
+        const { password } = req.body
+        const { email } = req.body
 
+        // throw an error if no body
+        if (!req.body) {
+            throw('Bad request')
+        }
+        // throw an error if information is missing
+        if (!req.body.firstName || !req.body.lastName || !req.body.username || !req.body.password || !req.body.email) {
+            throw('Missing or incorrect input')
+        }
+
+        // make sure username && email are unique
+        const uniqueQuery = `select * from customers where username = $1 or email = $2`;
+        const uniqueValues = [username, email]
+        const uniqueTest = await db.query(uniqueQuery, uniqueValues)
+        if (uniqueTest.rows != 0) {
+            throw('A customer with this username or email already exists')
+        }
+
+        // salt and hash the password
         const secret = hash(password, generateSalt(14));
         const salt = secret.salt
         const hashed = secret.hashedpassword
 
-        const values = [firstName, lastName, countryId, username, hashed, salt, email]
-        const newQuery = "INSERT INTO customers (first_name, last_name, country_id, username, supersecretword, salt, email) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-        const result = await db.query(newQuery, values)
-        res.send(result)
+        // validate inputs?
+
+        // if all good, insert into the database
+        const values = [firstName, lastName, username, hashed, salt, email]
+        const newQuery = "INSERT INTO customers (first_name, last_name, username, supersecretword, salt, email) VALUES ($1, $2, $3, $4, $5, $6)"
+        await db.query(newQuery, values)
+        res.status(205).send('Success')
     } catch (error) {
         console.log(error)
-        res.send('There was an error')
+        res.status(400).send(error)
     }
 })
 
 // PUT update a customer's info by their id
+
+/**
+ * @swagger
+ * /api/customers/{id}:
+ *   put:
+ *     tags: Customers
+ *     description: Updates a single customer
+ *     produces: application/json
+ *     parameters:
+ *       - name: id
+ *         description: Customer's id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *         $ref: '#/definitions/Customer'
+ *     responses:
+ *       200:
+ *         description: Successfully updated
+ */
 
 router.put('/:id/', async (req, res) => {
     try {
@@ -90,6 +211,26 @@ router.put('/:id/', async (req, res) => {
 
 // DELETE a customer by their id 
 //we need to check if ADMIN
+
+/**
+ * @swagger
+ * /api/customers/{id}:
+ *   delete:
+ *     tags:
+ *       - Customers
+ *     description: Deletes a single customer
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Customer's id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successfully deleted
+ */
 
 router.delete('/:id', async (req, res) => {
     try {

@@ -1,0 +1,293 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+/* NavBar */
+
+.NavBar {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  background-color: #2e1b1c;
+}
+
+.NavBar h1, h2 {
+  padding: 1.25% 5%;
+  margin: 0;
+  color: white;
+}
+
+.Nav-Profile {
+  width: 30%;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+}
+
+.Nav-Option{
+  padding: 1% 5%;
+}
+
+.Nav-Cart {
+  padding: 1% 5%;
+}
+
+.NavBarLink {
+  color: white;
+  text-decoration: none;
+}
+
+.NavBarLink:hover {
+  text-decoration: underline;
+}
+
+/* SearchBar */
+
+.SearchBar {
+  width: 60%;
+}
+
+.SearchForm {
+  width: 100%;
+}
+
+.SearchInput {
+  width: 70%;
+  height: 100%;
+  padding: 1% 0%;
+}
+
+.SearchButton {
+  padding: 1% 0%;
+  width: 42px;
+  height: 42px;
+  background-color: orange;
+}
+
+/* Mini NavBar */
+
+.NavBarMini {
+background-color: #ed2839;
+}
+
+.NavBarMiniItems {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+  align-content: center;
+  justify-content: center;
+  color: white;
+}
+
+.NavBarMiniItems li {
+  display: flex;
+  padding: 0.5% 1.5%;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr 1fr 0.7fr;
+  grid-template-rows: 100px 100px 100px auto;
+  grid-template-areas:
+    ". header header ."
+    "main main main main"
+    "main main main main";
+}
+
+.Content {
+  grid-area: main;
+  padding: 2%;
+  background-color: white;
+  width: 75%;
+  height: fit-content;
+  justify-self: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.background {
+  background-image: linear-gradient(#ff9dae, white);
+  height: 800px;
+  grid-area: header;
+}
+
+.FormContainer {
+  height: fit-content;
+  width: 50%;
+  align-self: center;
+}
+
+.FormContainer form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.FormItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 2% 0%;
+  width: 100%;
+}
+
+.FormItem input {
+  width: 100%;
+  padding: 0.25rem;
+}
+
+.FormItem input:focus {
+  outline: 2px solid #ed2839;
+}
+
+.FormItem label {
+  text-align: left;
+  width: 50%;
+}
+
+.SubmitButton {
+  background-color: #ed2839;
+  width: 100px;
+  height: 33px;
+  border: 0;
+}
+
+.SubmitButton button {
+  color: white;
+}
+
+.SubmitButton:disabled {
+  background-color: #f5848e;
+}
+
+input[type="submit" i] {
+  color: white;
+}
+
+/* Product List */
+
+.ProductListContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+.ProductListItemContainer {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 1%;
+  border-bottom: 1px solid #2e1b1c;
+}
+
+.ProductListItemPictureContainer {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 1%;
+}
+
+.ProductListItemPictureContainer figure {
+  width: 75%;
+  margin: 0;
+  padding: 0;
+}
+
+.ProductListItemPicture {
+  height: 200px;
+}
+
+.ProductListItemContent {
+  padding: 2% 0%;
+  width: 50%;
+  text-align: left;
+}
+
+/* Individual Products */
+
+.ProductContainer{
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.BackResults{
+  text-align: left;
+  margin: 2%;
+}
+
+.ProductImageContainer {
+  width: 33%;
+}
+
+.ProductImage {
+  width: 100%;
+}
+
+.ProductInformationContainer {
+  width: 33%;
+}
+
+.ProductStockInformationContainer{
+  width: 33%;
+  border: 1px solid #2e1b1c;
+  display: flex;
+  flex-direction: column;
+}
+
+.ProductAddToCart {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Text Styles */
+
+.Price {
+  color: #ed2839;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.Title {
+  text-transform: capitalize;
+  text-decoration: none;
+  color: #2e1b1c;
+}
+
+.Title:link {
+  text-transform: capitalize;
+  text-decoration: none;
+  color: #2e1b1c;
+}
+
+.Title:visited {
+  text-transform: capitalize;
+  text-decoration: none;
+  color: #2e1b1c;
+}
+
+.Title:hover {
+  text-transform: capitalize;
+  text-decoration: underline;
+  color: #ed2839;
+}
