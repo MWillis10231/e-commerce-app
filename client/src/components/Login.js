@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function Login(props) {
     const [counter, setCounter] = useState(0)
-    const [customerData, setCustomerData] = useState({})
 
     useEffect(() => {
       if (!document.getElementById('username').value || !document.getElementById('password').value) {
@@ -35,7 +34,8 @@ export default function Login() {
         try {
             let form = document.getElementById('login');
             let formData = new FormData(form)
-            submitData(formData).then(response => response.json().then(response => (setCustomerData(response))));
+            submitData(formData).then(response => response.json().then(response => (props.updateCustomerData(response))));
+            props.signIn();
             event.preventDefault();
         } catch (error) {
           console.log(error)
@@ -50,15 +50,15 @@ export default function Login() {
                 <p>Log in to your Nile account.</p>
                 <form onSubmit={submitLogin} id="login">
                     <div className="FormItem">
-                        <label>Username:</label>
-                        <input type="text" id="username" name="username" onInput={updateForm} />
+                        <label htmlFor="username">Username:</label>
+                        <input type="text" id="username" name="username" onInput={updateForm} required/>
                     </div>
                     <div className="FormItem">
-                        <label>Password:</label>
-                        <input type="password" id="password" name="password" onInput={updateForm} />
+                        <label htmlFor="password">Password:</label>
+                        <input type="password" id="password" name="password" onInput={updateForm} required/>
                     </div>
                     <div className="FormItem">
-                        <input className="SubmitButton" id="LoginButton" type="submit" value="Log In" />
+                      <input className="SubmitButton" id="LoginButton" type="submit" value="Log In"/>
                     </div>
                 </form>
                 <p>No account? Register <Link to="/register">here</Link></p>

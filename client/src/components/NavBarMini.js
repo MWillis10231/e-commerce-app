@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom"
 
-export default function NavBarMini() {
+export default function NavBarMini(props) {
   
     return (
       <nav className="NavBarMini"> 
         <ul className="NavBarMiniItems">
-          <li><a href="/products/" className="NavBarLink">All</a></li>
-          <li><a href="/products/category/1" className="NavBarLink">Books</a></li>
-          <li><a href="/products/category/2" className="NavBarLink">Audio/Visual</a></li>
-          <li><a href="/products/category/3" className="NavBarLink">Electronics</a></li>
-          <li><a href="/products/category/4" className="NavBarLink">Home &#38; Garden</a></li>
-          <li><a href="/products/category/5" className="NavBarLink">Toys</a></li>
-          <li><a href="/products/category/6" className="NavBarLink">Clothes</a></li>
-          <li><a href="/products/category/7" className="NavBarLink">Sports &#38; Outdoors</a></li>
-          <li><a href="/products/category/8" className="NavBarLink">Health &#38; Beauty</a></li>
+          <li><Link to="/products/" className="NavBarLink" onClick={props.navigationCounter}>All</Link></li>
+          <li><Link to="/products/category/1" className="NavBarLink" onClick={props.updateCustomerData}>Books</Link></li>
+          <li><Link to="/products/category/2" className="NavBarLink" onClick={props.updateCustomerData}>Audio/Visual</Link></li>
+          <li><Link to="/products/category/3" className="NavBarLink" onClick={props.updateCustomerData}>Electronics</Link></li>
+          <li><Link to="/products/category/4" className="NavBarLink">Home &#38; Garden</Link></li>
+          <li><Link to="/products/category/5" className="NavBarLink">Toys</Link></li>
+          <li><Link to="/products/category/6" className="NavBarLink">Clothes</Link></li>
+          <li><Link to="/products/category/7" className="NavBarLink">Sports &#38; Outdoors</Link></li>
+          <li><Link to="/products/category/8" className="NavBarLink">Health &#38; Beauty</Link></li>
         </ul>
       </nav>
     );

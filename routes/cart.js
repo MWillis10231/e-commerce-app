@@ -1,52 +1,67 @@
 const Router = require('express-promise-router')
 const db = require('../db')
+const { v4: uuidv4 } = require('uuid');
 
 const router = new Router()
 
 module.exports = router
 
 // CREATE A CART 
-// Can we store what was in the cart in a local variable? then load that into this?
-// Should be possible and is a good idea imo
-// Do all these need to be async? If not accessing database probably not
-
 router.put('/', async (req, res) => {
     // user clicks on a product > add to cart 
     // if no cart, create it and the empty items array
     if (!req.session.cart) {
-        req.session.cart = {cartId: 1};
-        req.session.items = [];
+        req.session.cart = {cartId: uuidv4()};
+        req.session.cart.items = [];
+        console.log(req.session.cart)
     }
 
-    // test
-    let newProduct = {id: 1, quantity: 2}
+    // Get the quantity and product Id from the request body
+    let { productId } = req.body
+    let { quantity } = req.body
+
+    //! if there is no request body we need to throw an error
+
+
+    // assign a new product the id & quantity and make sure the values are both actually numbers
+    let newProduct = {id: parseInt(productId), quantity: parseInt(quantity)}
 
     // check if there is an existing product in the cart with that id
-    const findIndex = req.session.items.findIndex(item => item.productId === newProduct.productId)
+    const findIndex = req.session.cart.items.findIndex(item => item.id === newProduct.id)
     console.log(findIndex);
 
     // if there is, update the quantity
     if (findIndex !== -1) {
-        req.session.items[findIndex].quantity = req.session.items[findIndex].quantity + newProduct.quantity
-        res.send('Updated the quantity!')
+        req.session.cart.items[findIndex].quantity = parseInt(req.session.cart.items[findIndex].quantity) + parseInt(newProduct.quantity)
+        // if the quantity goes to zero, remove the item
+        if (req.session.cart.items[findIndex].quantity === 0) {
+            req.session.cart.items.splice([findIndex], 1);
+            res.send('Removed the item')
+        } else {
+            res.send('Updated the quantity!')
+        }
     } else {
         // otherwise push to the array
-        req.session.items.push(newProduct);
+        req.session.cart.items.push(newProduct);
         res.send('Added the product!')
     }    
     console.log(req.session)
+    console.log(req.session.cart.items)
 })
 
 router.get('/', (req, res) => {
+    console.log(req.session)
+    console.log(req.session.cart)
     // user wants to look at what's in their cart
     if (req.session.cart !== undefined) {
-        if (typeof req.session.items !== undefined) {
-            res.send(req.session.items)
+        if (req.session.cart.items.length) {
+            const cart = req.session.cart.items
+            res.json({items: cart})
         } else {
-            res.send('Add something to your cart!')
+            res.json({items: 'empty'})
         }
     } else {
-        res.send('No cart found!')
+        res.json({items: 'no cart'})
     }
 })
 

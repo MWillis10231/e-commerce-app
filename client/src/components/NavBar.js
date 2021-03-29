@@ -12,7 +12,29 @@ export default function NavBar(props) {
         signInLogOut = <div className="Nav-Option"><Link className="NavBarLink" to="/login">Login</Link></div>;
     } else if (props.loggedIn === true) {
         name = <div className="Nav-Option">Hello, <Link className="NavBarLink" to="/profile">{props.username}</Link></div>
-        signInLogOut = <div className="Nav-Option"><Link className="NavBarLink" to="/logout">Logout</Link></div>
+        signInLogOut = <div className="Nav-Option"><Link className="NavBarLink" to="/logout" onClick={submitLogout}>Logout</Link></div>
+    }
+
+    async function submitLogout(event) {
+        try {
+            const response = await fetch('http://localhost:5000/account/logout/', {
+                method: 'GET',
+                mode: 'cors',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/json'},
+            })
+            // if the response is okay, then signout and redirect
+            if (response.ok === true) {
+                props.signOut();
+                return
+            }
+            // if not, stop redirect and flash an error
+            alert('There was an error, please try again')
+            event.preventDefault();
+        } catch (error) {
+          console.log(error)
+          event.preventDefault();
+        }  
     }
 
     return(

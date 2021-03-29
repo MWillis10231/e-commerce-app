@@ -5,13 +5,21 @@ import {
 } from "react-router-dom";
 import ProductsList from './ProductsList'
 import ProductSingle from "./ProductSingle";
+import Filter from './Filter'
+import { Fragment } from "react";
+import SortBar from "./Sort";
 
 export default function Products(props) {
   let match = useRouteMatch();
 
   return (
-    <div className="Content">
+    <Fragment>
       <Switch>
+        <Route path={`${match.path}/search`} exact>
+          <SortBar />
+          <Filter />
+          <ProductsList update={match}/>
+        </Route>
         <Route path={`${match.path}/:productId`} exact>
           <ProductSingle/>
         </Route>
@@ -19,11 +27,9 @@ export default function Products(props) {
           <ProductsList update={match}/>
         </Route>
         <Route path={`${match.path}/`} exact>
-          <h3>All products</h3>
-          <p>Limit results by searching for a product or filter by a category above.</p>
           <ProductsList/>
         </Route>
       </Switch>
-    </div>
+    </Fragment>
   );
 }

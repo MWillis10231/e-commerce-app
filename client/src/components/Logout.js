@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function Logout() {
+
     return(
         <div className="Content">
             <header><h3>Logout</h3></header>

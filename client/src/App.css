@@ -107,9 +107,9 @@ main {
   grid-template-columns: 0.7fr 1fr 1fr 0.7fr;
   grid-template-rows: 100px 100px 100px auto;
   grid-template-areas:
-    ". header header ."
-    "main main main main"
-    "main main main main";
+    "filter header header ."
+    "filter main main ."
+    "filter main main .";
 }
 
 .Content {
@@ -225,15 +225,20 @@ input[type="submit" i] {
 
 /* Individual Products */
 
-.ProductContainer{
+.ProductContainer {
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
 }
 
-.BackResults{
+.BackResults {
   text-align: left;
   margin: 2%;
+}
+
+.BackResults:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .ProductImageContainer {
@@ -259,6 +264,66 @@ input[type="submit" i] {
   display: flex;
   flex-direction: column;
 }
+
+/* Filter Styles */
+
+.FilterBar {
+  grid-area: filter;
+  padding: 15% 5% 0;
+  background-color: white;
+  height: fit-content;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.FilterForm {
+  width: 100%;
+}
+
+.FilterCategoryItem {
+  width: 100%;
+  display: flex;
+  justify-self: center;
+}
+
+.FilterCategoryItem label {
+  width: 100%;
+  display: flex;
+}
+
+.FilterInput {
+  width: 40%;
+}
+
+.FilterContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#PriceMin, #PriceMax {
+  width: auto;
+}
+
+#RatingMin, #RatingMax {
+  width: auto;
+}
+
+.RatingNumbers {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none
+}
+
+.RatingNumbers li {
+  margin: 0;
+  padding: 0;
+  width: 16.67%;
+}
+
 
 /* Text Styles */
 
@@ -291,3 +356,4 @@ input[type="submit" i] {
   text-decoration: underline;
   color: #ed2839;
 }
+

@@ -165,7 +165,6 @@ router.post('/register/', async (req, res) => {
         const values = [firstName, lastName, username, hashed, salt, email]
         const newQuery = "INSERT INTO customers (first_name, last_name, username, supersecretword, salt, email) VALUES ($1, $2, $3, $4, $5, $6)"
         await db.query(newQuery, values)
-        res.status(205).send('Success')
     } catch (error) {
         console.log(error)
         res.status(400).send(error)
