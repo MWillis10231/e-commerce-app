@@ -1,51 +1,50 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-export default function SortBar() {
-  let location = useLocation();
-
-  const [sort, setSort] = useState();
-
-  async function submitSort(event) {
-    let form = document.getElementById('sort')
-    let formContents = new FormData(form)
-    event.preventDefault();
-    let sortOption = formContents.get('sortoption')
-    setSort(sortOption)
-  } 
-
+export default function SortBar(props) {
   const sortCategories = ["price", "pricedesc", "score", "scoredesc"]
+  const [sort, setSort] = useState('')
+  let location = useLocation();
 
   let sortFilterBoxes = sortCategories.map(function (sortCategory, index) {
     let sortCategoryNames = ["Price: Ascending", "Price: Descending", "Score: Ascending", "Score: Descending"]
     return (
-      <div className="FilterCategoryItem">
+      <div className="SortCategoryItem">
         <input
           className="SortInput"
           id={`Sort${sortCategory}`}
           name="sortoption"
           type="radio"
           value={sortCategory}
-          onChange
+          onMouseEnter={callUpdateSearch}
+          onChange={callUpdateSearch}
         ></input>
-        <label for={`Sort${sortCategory}`}>{sortCategoryNames[index]}</label>
+        <label for={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
       </div>
     );
   });
 
+  function callUpdateSearch(event) {
+    setSort({sort: event.target.value})
+  }
+
+  function sendUpdateSearch() {
+    props.updateSearch(sort)
+  }
 
   return (
     <div className="SortBar">
-      <h4>Sort Results</h4>
-      <form name="sort" id="sort" onSubmit={submitSort}>
+      <form name="sort" id="sort">
+        <div className="SortRadio">
         {sortFilterBoxes}
+        </div>
         <Link
           to={{
-            pathname: `/products/search`,
-            //search: 
+            pathname: `${location.pathname}`,
+            search: props.search,
           }}
         >
-          <button className="FilterButton" type="submit">
+        <button className="FilterButton" type="submit" onClick={sendUpdateSearch}>
             Apply Filter
           </button>
         </Link>

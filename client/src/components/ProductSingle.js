@@ -3,21 +3,22 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import productImages from '../javascript/productimages'
 
 export default function ProductSingle(props) {
+  let match = useRouteMatch();
+
   useEffect(() => {
+    const fetchProduct = async () => {
+      const fetchProduct = await fetch(
+        `http://localhost:5000/products/${match.params.productId}`
+      );
+      const product = await fetchProduct.json();
+      setProduct(product);
+    };
     fetchProduct();
-  }, []);
+  }, [match.params.productId]);
 
   let history = useHistory();
-  let match = useRouteMatch();
   const [product, setProduct] = useState({});
-
-  const fetchProduct = async () => {
-    const fetchProduct = await fetch(
-      `http://localhost:5000/products/${match.params.productId}`
-    );
-    const product = await fetchProduct.json();
-    setProduct(product);
-  };
+  const [productAmount, setProductAmount] = useState(0)
 
   async function addProduct(data = {}) {
     const response = await fetch('http://localhost:5000/cart/', {
@@ -44,6 +45,7 @@ export default function ProductSingle(props) {
         addProduct(productToAdd).then(response => response.json().then(response => console.log(response)));
         // should add a single product to the cart (0) here
         event.preventDefault();
+        props.addCartItem();
         alert('Item added to cart successfully!')
     } catch (error) {
       console.log(error)
@@ -54,6 +56,20 @@ export default function ProductSingle(props) {
   let data;
   let brand;
   let image;
+
+  function onQuantityChange(event) {
+    setProductAmount(event.target.value)
+  }
+
+  function showBigImage() {
+    let picture = document.getElementById("BigImageContainer")
+    picture.style.display = "flex"
+  }
+
+  function hideBigImage() {
+    let picture = document.getElementById("BigImageContainer")
+    picture.style.display = "none"
+  }
 
   if (product) {
     // if category is book, or audio/visual, set the "brand" to a person/author/director rather than a company
@@ -67,10 +83,14 @@ export default function ProductSingle(props) {
 
     data = (
       <React.Fragment>
+        <figure className="ProductImageContainerBig" id="BigImageContainer">
+          <img src={image} alt="product" className="ProductImageBig" id="BigImage"/>
+          <figcaption onClick={hideBigImage}>Click to hide</figcaption>
+        </figure>
         <div className="ProductImageContainer">
           <figure>
             <img src={image} alt="product" className="ProductImage"/>
-            <figcaption>Hover to enlarge</figcaption>
+            <figcaption onClick={showBigImage}>Click to enlarge</figcaption>
           </figure>
         </div>
         <div className="ProductInformationContainer">
@@ -83,13 +103,14 @@ export default function ProductSingle(props) {
           </p> 
         </div>
         <div className="ProductStockInformationContainer">
-          <h4>Price: {product.price}$</h4>
-          <p>Stock: {product.stock_amount}</p>
+          <h3>In stock</h3>
+          <p>Stock amount: {product.stock_amount}</p>
           <form className="ProductAddToCart" onSubmit={submitAddProduct}>
-            <div className="FormItem">
+            <div className="FormItem" id="ProductQuantityContainer">
                 <label htmlFor="quantity">Quantity</label>
-                <input type="number" id="quantity" name="quantity" maxLength="4" required/>
+                <input type="number" id="quantity" name="quantity" maxLength="4" required onChange={onQuantityChange}/>
             </div>
+            <p>Total price: {productAmount ? product.price * productAmount : product.price}$</p>
             <div className="FormItem">
               <button className="SubmitButton">Add to cart</button>
             </div>
@@ -103,7 +124,7 @@ export default function ProductSingle(props) {
 
   return (
   <div className="Content">
-    <header className="BackResults" onClick={history.goBack}>&larr; Back to your results</header>
+    <header className="BackResults" onClick={history.goBack}>&larr; Back</header>
     <div className="ProductContainer">{data}</div>
   </div>
   )

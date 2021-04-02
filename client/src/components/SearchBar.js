@@ -1,27 +1,20 @@
 import { Link } from "react-router-dom"
-import { useState } from "react";
 
-export default function SearchBar() {
-  const [search, setSearch] = useState();
-
-  function searchTerm(event) {
-    setSearch(event.target.value);
-  }
-
+export default function SearchBar(props) {
   return (
     <div className="SearchBar">
-      <form className="SearchForm" >
+      <form className="SearchForm">
         <input
           className="SearchInput"
           type="text"
           placeholder="Search..."
-          value={search}
-          onInput={searchTerm}
+          value={props.search}
+          onInput={props.findSearch}
           required
         ></input>
         <Link to={{
           pathname: `/products/search`,
-          search: `name=${search}`
+          search: `name=${props.search}`,
           }}><button className="SearchButton" type="submit">S</button></Link>
       </form>
     </div>

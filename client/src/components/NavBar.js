@@ -40,7 +40,7 @@ export default function NavBar(props) {
     return(
         <nav className="NavBar">
             <h1><Link className="NavBarLink" to="/About">Nile.com</Link></h1>
-            <SearchBar />
+            <SearchBar findSearch={props.findSearch} search={props.search}/>
             <div className="Nav-Profile">
                 {register}
                 {name}

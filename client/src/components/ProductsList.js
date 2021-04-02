@@ -1,14 +1,19 @@
 import ProductsListItem from "./ProductsListItem.js";
-import React, { useEffect, useState } from "react";
-import { useRouteMatch, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { useRouteMatch } from "react-router-dom";
+import SortBar from "./Sort.js";
 
 export default function ProductsList(props) {
-  let match = useRouteMatch();
-  let location = useLocation().pathname
-  let search = useLocation().search
+  let categoryIndex = (useRouteMatch().params.categoryId)
+  const [category, setCategory] = useState('');
 
-  // find out the search term used from these params (if the index of the second doesn't exist, return undefined so no endIndex on slice)
-  let searchTerm = search.slice((search.indexOf('=') + 1), (search.indexOf('&') !== -1 ? search.indexOf('&'): undefined))
+  let searchTermText
+    if (props.search) {
+      searchTermText = 'Search for: ' + props.search
+    } else {
+      searchTermText = undefined
+    }
+  let data
 
   useEffect(() => {
     const productCategories = [
@@ -21,50 +26,39 @@ export default function ProductsList(props) {
       "Clothes",
       "Sports & Outdoors",
       "Health & Beauty",
-    ];
-    const fetchAllProducts = async () => {
-      setProducts([])
-      const data = await fetch(`http://localhost:5000${location+search}`);
-      const products = await data.json();
-      setProducts(products);
-      if (match.params.categoryId) {
-        setCategory(`Category: ${productCategories[match.params.categoryId]}`)
-      } else {
-        setCategory()
+    ]; 
+
+    function applyCategory() {
+      if (productCategories[categoryIndex] !== undefined) {
+        setCategory(`Category: ${productCategories[categoryIndex]}`)
       }
-    };
-    fetchAllProducts();
-  }, [location, match.params.categoryId, match.url, search]);
+      if (searchTermText !== undefined) {
+        setCategory('')
+      }
+    }
+    applyCategory();
+  }, [category, categoryIndex, searchTermText])
 
-  const [products, setProducts] = useState("Loading...");
-  const [category, setCategory] = useState([]);
 
-  let data;
-  console.log(products);
-
-  if (Array.isArray(products)) {
-    data = products.map(function (product, index) {
+  if (Array.isArray(props.products)) {
+    data = props.products.map(function (product, index) {
       return (
         <ProductsListItem
-          data={products[index]}
+          data={props.products[index]}
           key={index}
           number={index + 1}
         />
       );
     });
-  } else if (products === "Loading...") {
+  } else if (props.products === "Loading...") {
     data = "Loading..."
   }else {
     data = "No products found";
   }
 
-  let numberOfResults = products.length
+  let numberOfResults = props.products.length
 
-  // if there's a search term, log it
-  let searchTermText
-  if (searchTerm) {
-    searchTermText = 'Search for: ' + searchTerm
-  }
+
 
   let allProducts
   if (!searchTermText && !category) {
@@ -80,6 +74,7 @@ export default function ProductsList(props) {
       <h3>{category}{searchTermText}</h3>
       {allProducts}
       <h4>{numberOfResults} Results</h4>
+      <SortBar updateSearch={props.updateSearch}/>
       <div className="ProductListContainer">{data}</div>
     </div>
   );

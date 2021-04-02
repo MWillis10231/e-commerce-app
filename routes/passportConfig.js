@@ -19,7 +19,7 @@ module.exports = function(passport) {
           return done(null, false, {message: 'Sorry, your password was incorrect'})
         }
         // otherwise return user
-        return done(null, {id: customer.rows[0].customer_id, username: customer.rows[0].username, firstName: customer.rows[0].first_name, lastName: customer.rows[0].last_name, email: customer.rows[0].email}, {message: `Welcome ${customer.rows[0].username}`})
+        return done(null, {id: customer.rows[0].customer_id, username: customer.rows[0].username, firstName: customer.rows[0].first_name}, {message: `Welcome ${customer.rows[0].username}`})
       } catch(error) {
         console.log(error)
       }

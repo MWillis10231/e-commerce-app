@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import productImages from "../javascript/productimages";
 
-export default function ProductSingle(props) {
+export default function CartProduct(props) {
   //fetches a single product by its ID (passed through props.id)
   useEffect(() => {
     if (props.id) {
@@ -40,13 +41,13 @@ export default function ProductSingle(props) {
         let quantity = document.getElementById(`quantity${props.id}`).value;
         // get productid from the state
         let productId = product.product_id;
-        console.log(`The old quantity is ${quantity}`);
-        console.log(`The old quantity is ${productId}`);
+        //console.log(`The old quantity is ${quantity}`);
+        //console.log(`The old quantity is ${productId}`);
         //work out the difference to update
         let newQuantity = quantity - props.quantity;
-        console.log(
+/*         console.log(
           `There difference between the two / the update to the old quantity is = ${newQuantity}`
-        );
+        ); */
 
         // create an object with the data
         let productToAdd = { productId: productId, quantity: newQuantity };
@@ -55,7 +56,6 @@ export default function ProductSingle(props) {
         );
         // should add a single product to the cart (0) here
         event.preventDefault();
-        alert("Item quantity updated successfully!");
         props.updateCart();
       } catch (error) {
         console.log(error);
@@ -80,7 +80,6 @@ export default function ProductSingle(props) {
         );
         // should remove a single product to the cart (0) here
         event.preventDefault();
-        alert("Item removed successfully!");
         props.updateCart();
       } catch (error) {
         console.log(error);
@@ -117,14 +116,15 @@ export default function ProductSingle(props) {
           </figure>
         </div>
         <div className="ProductInformationContainer">
-          <h3>{product.name}</h3>
+          <h3><Link to={`/products/${props.id}`}>{product.name}</Link></h3>
           <h4>
             {brand}, {product.year}
           </h4>
-          <h4>Price: {product.price}$</h4>
+          <p>Unit Price: ${product.price}</p>
+          <h4>Total Price: ${product.price * quantity}</h4>
         </div>
         <form className="ProductAddToCart" onSubmit={updateProductCount}>
-          <div className="FormItem">
+          <div className="CartFormItem">
             <label htmlFor="quantity">Quantity</label>
             <input
               type="number"
@@ -142,7 +142,7 @@ export default function ProductSingle(props) {
             <button className="SubmitButton">Update</button>
           </div>
         </form>
-        <form onSubmit={deleteProduct}>
+        <form className="DeleteForm" onSubmit={deleteProduct}>
           <button className="DeleteButton">X</button>
         </form>
       </React.Fragment>

@@ -1,4 +1,5 @@
 export default function RatingNumbers() {
+
   return (
     <ul className="RatingNumbers">
       <li>0</li>

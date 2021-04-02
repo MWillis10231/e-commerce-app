@@ -11,9 +11,7 @@ export default function Home() {
                 Please bear with it! :)
                 </p>
             <p>Learn more about Nile <Link to="/about">here</Link>.</p>
-            <p><Link to="/register">Register</Link>, or <Link to="/login">log-in</Link></p>
-            <p><Link to="/products">View</Link> the products (and maybe place an order).</p>
-            <p>If you're already logged in, check out your <Link to="/profile">profile</Link>.</p>
+            <p>Otherwise, click around and explore what's on offer!</p>
         </div>
     )
 }

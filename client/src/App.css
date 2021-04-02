@@ -13,6 +13,26 @@
   color: white;
 }
 
+/* Global Styles */
+
+button {
+  align-items: center;
+  color: white;
+  background-color: #ed2839;
+  width: 100px;
+  height: 33px;
+  border: 0;
+  align-self: center;
+}
+
+button:disabled {
+  background-color: #f5848e;
+}
+
+h2, h3, h4, h5, h6, p {
+  color: #2e1b1c;
+}
+
 /* NavBar */
 
 .NavBar {
@@ -62,6 +82,7 @@
 
 .SearchBar {
   width: 60%;
+  height: 50%;
 }
 
 .SearchForm {
@@ -76,9 +97,8 @@
 
 .SearchButton {
   padding: 1% 0%;
-  width: 42px;
-  height: 42px;
   background-color: orange;
+  width: 5%;
 }
 
 /* Mini NavBar */
@@ -146,13 +166,17 @@ main {
   display: flex;
   flex-direction: row;
   align-items: center;
+  align-self: center;
+  justify-content: center;
   margin: 2% 0%;
   width: 100%;
+  text-align: center;
 }
 
 .FormItem input {
   width: 100%;
   padding: 0.25rem;
+  text-align: center;
 }
 
 .FormItem input:focus {
@@ -160,15 +184,17 @@ main {
 }
 
 .FormItem label {
-  text-align: left;
   width: 50%;
 }
+
+
 
 .SubmitButton {
   background-color: #ed2839;
   width: 100px;
   height: 33px;
   border: 0;
+  align-self: center;
 }
 
 .SubmitButton button {
@@ -220,7 +246,7 @@ input[type="submit" i] {
 .ProductListItemContent {
   padding: 2% 0%;
   width: 50%;
-  text-align: left;
+  text-align: center;
 }
 
 /* Individual Products */
@@ -243,10 +269,33 @@ input[type="submit" i] {
 
 .ProductImageContainer {
   width: 33%;
+  display: flex;
+  align-items: center;
+  margin: 1%;
 }
 
 .ProductImage {
   width: 100%;
+}
+
+.ProductImageBig {
+  display: flex;
+  width: 100%;
+  align-self: center;
+  justify-self: center;
+  margin: 0 5%;
+}
+
+.ProductImageContainerBig {
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  width: 33%;
+  align-self: center;
+  justify-self: center;
+  padding: 2%;
+  margin: 2%;
+  background-color: rgba(255, 255, 255, 1);
 }
 
 .ProductInformationContainer {
@@ -256,13 +305,64 @@ input[type="submit" i] {
 .ProductStockInformationContainer{
   width: 33%;
   border: 1px solid #2e1b1c;
+  margin: 1%;
   display: flex;
   flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
 }
 
 .ProductAddToCart {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+}
+
+.CartFormItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5%;
+}
+
+.CartFormItem label {
+  padding: 5%;
+}
+
+.CartFormItem input {
+  text-align: center;
+}
+
+#ProductQuantityContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#ProductQuantityContainer label {
+  text-align: center;
+}
+
+#ProductQuantityContainer input {
+  margin: 1%;
+  width: 70%;
+}
+
+.ProductImageContainer figure {
+  width: 100%;
+  margin: 0;
+  height: fit-content;
+}
+
+.DeleteForm {
+ display: flex;
+ margin-left: 2%;
+}
+
+.DeleteButton {
+  height: 20px;
+  width: 20px;
 }
 
 /* Filter Styles */
@@ -324,6 +424,44 @@ input[type="submit" i] {
   width: 16.67%;
 }
 
+/* Sort Styles */
+
+.SortBar {
+  grid-area: header;
+  height: fit-content;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.SortBar h4 {
+  margin: 1%;
+}
+
+.SortRadio {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2%;
+}
+
+.SortInput {
+  width: 40%;
+}
+
+.SortLabel {
+  font-size: 0.75rem;
+  width: 100%;
+  display: flex;
+}
+
+.SortCategoryItem {
+  width: 25%;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Text Styles */
 

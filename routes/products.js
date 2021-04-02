@@ -86,35 +86,54 @@ router.get("/search", async (req, res) => {
       queryNum = queryNum + 1;
     }
   }
-  // if there's a min price ...
-  if (req.query.pricemin) {
-    const { pricemin } = req.query;
+  // if there's a max and a min price use between, else use greater/lesser than
+  if (req.query.pricemin && req.query.pricemax) {
+    const { pricemin, pricemax } = req.query;
     queryArray.push(pricemin);
-    const minPriceFilter = " AND products.price > ";
+    queryArray.push(pricemax);
+    const minPriceFilter = " AND products.price BETWEEN ";
     queryFilter = queryFilter + minPriceFilter + `$${queryNum}`;
     queryNum = queryNum + 1;
-  }
-  // if there's a max price ...
-  if (req.query.pricemax) {
+    const maxPriceFilter = " AND ";
+    queryFilter = queryFilter + maxPriceFilter + `$${queryNum}`;
+    queryNum = queryNum + 1;
+  
+  } else if (req.query.pricemin && !req.query.pricemax) {
+    const { pricemin } = req.query;
+    queryArray.push(pricemin);
+    const minPriceFilter = " AND products.price >= ";
+    queryFilter = queryFilter + minPriceFilter + `$${queryNum}`;
+    queryNum = queryNum + 1;
+
+  } else if (req.query.pricemax && !req.query.pricemin) {
     const { pricemax } = req.query;
     queryArray.push(pricemax);
-    const maxPriceFilter = " AND products.price < ";
+    const maxPriceFilter = " AND products.price <= ";
     queryFilter = queryFilter + maxPriceFilter + `$${queryNum}`;
     queryNum = queryNum + 1;
   }
   // if there's a min rating ...
-  if (req.query.minrating) {
-    const { minrating } = req.query;
+  if (req.query.minrating && req.query.maxrating) {
+    const { minrating, maxrating } = req.query;
     queryArray.push(minrating);
-    const minRatingFilter = " AND products.score > ";
+    queryArray.push(maxrating);
+    const minRatingFilter = " AND products.score BETWEEN ";
     queryFilter = queryFilter + minRatingFilter + `$${queryNum}`;
     queryNum = queryNum + 1;
-  }
-  // if there's a max rating ...
-  if (req.query.maxrating) {
+    const maxRatingFilter = " AND ";
+    queryFilter = queryFilter + maxRatingFilter + `$${queryNum}`;
+    queryNum = queryNum + 1;
+
+  } else if (req.query.minrating && !req.query.maxrating) {
+    const { minrating } = req.query;
+    queryArray.push(minrating);
+    const minRatingFilter = " AND products.score >= ";
+    queryFilter = queryFilter + minRatingFilter + `$${queryNum}`;
+    queryNum = queryNum + 1;
+  } else if (req.query.maxrating && !req.query.minrating) {
     const { maxrating } = req.query;
     queryArray.push(maxrating);
-    const maxRatingFilter = " AND products.score < ";
+    const maxRatingFilter = " AND products.score <= ";
     queryFilter = queryFilter + maxRatingFilter + `$${queryNum}`;
     queryNum = queryNum + 1;
   }

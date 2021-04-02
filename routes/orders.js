@@ -11,7 +11,7 @@ module.exports = router
 
 router.get('/:customerId', async (req, res) => {
     const { customerId } = req.params
-    const results = await db.query('SELECT * FROM orders WHERE customer_id = $1', [customerId])
+    const results = await db.query('SELECT * FROM orders WHERE customer_id = $1 ORDER BY date_ordered desc', [customerId])
     res.send(results.rows)
 })
 

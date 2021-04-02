@@ -56,12 +56,14 @@ router.get('/', (req, res) => {
     if (req.session.cart !== undefined) {
         if (req.session.cart.items.length) {
             const cart = req.session.cart.items
-            res.json({items: cart})
+            const id = req.session.cart.cartId
+            res.status(200).json({id: id, items: cart})
         } else {
-            res.json({items: 'empty'})
+            const id = req.session.cart.cartId
+            res.status(200).json({id: id, items: 'empty'})
         }
     } else {
-        res.json({items: 'no cart'})
+        res.status(404).json({id: 'none', items: 'no cart'})
     }
 })
 
@@ -77,30 +79,42 @@ router.post('/:cartid/checkout', async (req, res) => {
     } else {
         // Check payment??!?!?
         try {
-            const queryResult = await db.query('SELECT customer_id FROM customers WHERE username = $1', [req.session.passport.user])
-            const customerId = queryResult.rows[0].customer_id;
+            const customerId = req.session.passport.user
             const dateNow = new Date();
             const year = dateNow.getFullYear();
-            const month = dateNow.getMonth();
+            // month is 0 based 
+            const month = dateNow.getMonth()+1;
             const day = dateNow.getDate();
-            const formattedDate = `${year}-${month}-${day}`
             const hours = dateNow.getHours()
             const minutes = dateNow.getMinutes();
             const seconds = dateNow.getSeconds();
-            const ms = dateNow.getMilliseconds()
+            const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
             //create a unique orderId using customerId + ms of order
-            const orderId = `${customerId}${year}${month}${day}${hours}${minutes}${seconds}${ms}`
+            const orderId = uuidv4();
             // insert a new order with this information
             await db.query('INSERT INTO orders(order_id, customer_id, date_ordered) values($1, $2, $3)', [orderId, customerId, formattedDate])
             // update orders_products with each product & quantity relevant to the order
-            req.session.items.forEach(item => {
+            req.session.cart.items.forEach(item => {
                 const productId = item.id;
                 const { quantity } = item;
                 db.query('INSERT INTO orders_products(order_id, product_id, quantity) values($1, $2, $3)', [orderId, productId, quantity])
                 });
+            res.status(201).json({id: orderId, items: req.session.cart.items, success: true})
         } catch(error) {
             console.log(error)
-            res.send('There was an error, please try again later.')
+            res.status(400).json({id: orderId, items: req.session.cart.items, success: false})
         }
+    }
+})
+
+router.delete('/:cartid/delete', async (req, res) => {
+    // deletes a cart by its ID
+    if (req.session.cart) {
+        console.log(req.session.cart)
+        delete req.session.cart 
+        console.log(req.session.cart)
+        res.json({cart: 'deleted'});
+    } else {
+        res.json({cart: 'none found'});
     }
 })
