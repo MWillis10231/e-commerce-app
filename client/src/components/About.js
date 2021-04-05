@@ -7,7 +7,7 @@ export default function About() {
             <p>This is a PERN (full-stack) web application developed as part of the Full-Stack Engineer Course on Codecademy by Matthew Willis.</p>
             <p>Nile is an online marketplace that takes inspiration from real-world online stores.</p>
             <p>If you find any issues or you'd like to give feedback, please submit them on <a href="">GitHub</a></p>
-            <p>If you want to learn more about the technologies behidn the stack:</p>
+            <p>If you want to learn more about the technologies behind the stack:</p>
             <a href="https://www.postgresql.org/" target="_blank" rel="noreferrer">
                 <strong>P</strong>ostgreSQL
             </a>
