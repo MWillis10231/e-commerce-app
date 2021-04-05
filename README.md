@@ -16,17 +16,17 @@ If you want to learn more about the technologies behind the stack:
 
 ## Known issues
 
-Orders section is super ugly.
-Filters only work on the search function (an issue with my routing)
-When you logout, it doesn't clear your cart (neither in express nor in the app)
-Editing your profile does nothing at present
-It's not at all optimised for mobile (just like real Amazon)
+* Orders section is super ugly.
+* Filters only work on the search function (an issue with my routing)
+* When you logout, it doesn't clear your cart (neither in express nor in the app)
+* Editing your profile does nothing at present
+* It's not at all optimised for mobile (just like real Amazon)
 
 ## Improvements for future:
 
-A logo (design in progress)
-A nicer looking rating system with stars
-More unique / personalised products (even if we use fewer)
-Better sign-up system - maybe with email verification
-Option to enter an "address" for delivery
+* A logo (design in progress)
+* A nicer looking rating system with stars
+* More unique / personalised products (even if we use fewer)
+* Better sign-up system - maybe with email verification
+* Option to enter an "address" for delivery
 
