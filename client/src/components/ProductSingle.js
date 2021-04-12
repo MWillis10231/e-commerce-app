@@ -8,7 +8,7 @@ export default function ProductSingle(props) {
   useEffect(() => {
     const fetchProduct = async () => {
       const fetchProduct = await fetch(
-        `http://localhost:5000/products/${match.params.productId}`
+        `/products/${match.params.productId}`
       );
       const product = await fetchProduct.json();
       setProduct(product);
@@ -21,7 +21,7 @@ export default function ProductSingle(props) {
   const [productAmount, setProductAmount] = useState(0)
 
   async function addProduct(data = {}) {
-    const response = await fetch('http://localhost:5000/cart/', {
+    const response = await fetch('/cart/', {
       method: 'PUT',
       mode: 'cors',
       credentials: 'include',

@@ -12,7 +12,7 @@ export default function Profile(props) {
     const fetchOrders = async () => {
       setCustomerOrders('Loading')
       // it needs to include credentials on any request that requires passport otherwise it won't show
-      const orders = await fetch(`http://localhost:5000/orders/${props.customerData.id}`, {credentials: 'include'})
+      const orders = await fetch(`/orders/${props.customerData.id}`, {credentials: 'include'})
       const orderData = await orders.json();
       setCustomerOrders(orderData);
       }

@@ -18,7 +18,7 @@ export default function Login(props) {
     }
 
     async function submitData(data = {}) {
-        const response = await fetch('http://localhost:5000/account/login/', {
+        const response = await fetch('/account/login/', {
           method: 'POST',
           mode: 'cors',
           credentials: 'include',

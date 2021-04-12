@@ -17,7 +17,7 @@ export default function RegisterForm(props) {
   }
 
   async function submitData(data = {}) {
-    const response = await fetch('http://localhost:5000/customers/register/', {
+    const response = await fetch('/customers/register/', {
       method: 'POST',
       mode: 'cors',
       credentials: 'same-origin',

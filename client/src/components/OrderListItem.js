@@ -23,7 +23,7 @@ export default function OrderListItem(props) {
       setSingleOrder("Loading");
       // it needs to include credentials on any request that requires passport otherwise it won't show
       const orders = await fetch(
-        `http://localhost:5000/orders/${props.customerId}/${props.data.order_id}`,
+        `/orders/${props.customerId}/${props.data.order_id}`,
         { credentials: "include" }
       );
       const orderData = await orders.json();

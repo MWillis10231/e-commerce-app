@@ -8,7 +8,7 @@ export default function CartProduct(props) {
     if (props.id) {
       const fetchProduct = async () => {
         const fetchProduct = await fetch(
-          `http://localhost:5000/products/${props.id}`
+          `/products/${props.id}`
         );
         const product = await fetchProduct.json();
         setProduct(product);
@@ -23,7 +23,7 @@ export default function CartProduct(props) {
 
   // put request function, takes in the data and assigns it as the body of the request
   async function updateProduct(data = {}) {
-    const response = await fetch("http://localhost:5000/cart/", {
+    const response = await fetch("/cart/", {
       method: "PUT",
       mode: "cors",
       credentials: "include",

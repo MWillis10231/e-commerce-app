@@ -11,7 +11,7 @@ export default function OrderListItem(props) {
       setOrder('Loading')
       // it needs to include credentials on any request that requires passport otherwise it won't show
       // get the latest order by the customer
-      const latestOrderId = await fetch(`http://localhost:5000/orders/${props.customerId}/`, {credentials: "include"})
+      const latestOrderId = await fetch(`/orders/${props.customerId}/`, {credentials: "include"})
       const latestOrder = await latestOrderId.json()
       setOrder(latestOrder[0])
     };
@@ -25,7 +25,7 @@ export default function OrderListItem(props) {
         console.log(order)
         setSingleOrder("Loading");
         const orders = await fetch(
-          `http://localhost:5000/orders/${props.customerId}/${order.order_id}`,
+          `/orders/${props.customerId}/${order.order_id}`,
           { credentials: "include" }
         );
         const orderData = await orders.json();
