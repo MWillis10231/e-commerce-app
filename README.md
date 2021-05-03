@@ -24,7 +24,7 @@ List of features:
 
 * Functioning e-commerce REST API using Express, Node.js and Postgres
 * Front-end rendered through React application
-* User registration and log-in via API
+* User registration and log-in via API and Passport
 * Products & user information stored on PostgreSQL database
 * CRUD operations on products
 * CRUD operations on user accounts
