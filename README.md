@@ -59,6 +59,8 @@ What I didn't enjoy was the Passport section - this was badly documented and con
 
 ## Planned Improvements:
 
+* Secure routes using Express
+* More data validation
 * A logo (design in progress)
 * A nicer looking rating system with stars
 * More unique / personalised products (even if we use fewer)
