@@ -2,7 +2,7 @@
 
 ## About
 
-PERN Full-stack Application developed as part of the Full-Stack Engineer Course on Codecademy by Matthew Willis.
+A PERN Full-stack Application developed as part of the Full-Stack Engineer Course on Codecademy by Matthew Willis.
 
 Nile is an online marketplace that takes inspiration from real-world online stores.
 
