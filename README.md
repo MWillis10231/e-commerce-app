@@ -13,11 +13,13 @@ Nile is an online marketplace that takes inspiration from real-world online stor
 * Express
 * React
 * Node
-
 * Stripe
 * Passport
 
 ## Features
+
+List of features:
+
 * Functioning e-commerce REST API using Express, Node.js and Postgres
 * Front-end rendered through React application
 * User registration and log-in via API
@@ -27,8 +29,6 @@ Nile is an online marketplace that takes inspiration from real-world online stor
 * CRUD operations on user carts
 * User orders & payment (using Stripe)
 * User order history
-
-List of features:
 
 ## Brief
 
