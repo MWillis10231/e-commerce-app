@@ -8,6 +8,8 @@ Nile is an online marketplace that takes inspiration from real-world online stor
 
 ![alt text](https://github.com/MWillis10231/e-commerce-app/blob/master/client/public/nile.png "Live preview")
 
+Live view: https://nile-shopping.herokuapp.com/
+
 ## Libraries/Frameworks/Runtimes
 * PostgreSQL
 * Express
