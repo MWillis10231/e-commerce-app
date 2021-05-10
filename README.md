@@ -50,16 +50,12 @@ What I didn't enjoy was the Passport section - this was badly documented and con
 
 ## Known issues
 
-* Orders section is super ugly.
 * Filters only work on the search function (an issue with my routing)
-* When you logout, it doesn't clear your cart (neither in express nor in the app)
 * Editing your profile does nothing at present
 * It's not at all optimised for mobile (just like real Amazon)
-* Store isn't implemented properly using pg-connect-simple
 
 ## Planned Improvements:
 
-* Secure routes using Express
 * More data validation
 * A logo (design in progress)
 * A nicer looking rating system with stars
