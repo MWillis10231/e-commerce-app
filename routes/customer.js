@@ -4,14 +4,17 @@ const { generateSalt, hash, compare } = require('../javascript/encryption')
 
 const router = new Router()
 
+// Secure routes
+function requireLogin(req, res, next) {
+    //console.log(req.isAuthenticated())
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      res.status(403).json({error: "User is not logged in"});
+    }
+  }
+
 module.exports = router
-
-// Basic routes follow = will need some error handling etc. if they work
-// we also need to write IF EXISTS into all of our POSTGRES queries right?
-// Check passwords => do they know them, prompt?
-// Handle edge-cases
-
-// In reality we'd probably hide the errors and not log them to the console for database security
 
 //Swagger Definitions
 /**
@@ -48,7 +51,7 @@ module.exports = router
  *         schema:
  *           $ref: '#/definitions/Customer'
  */
-router.get('/all', async (req, res) => {
+router.get('/all', requireLogin, async (req, res) => {
     try {
         const results = await db.query('SELECT first_name, last_name, country_id, username, email FROM customers')
         res.send(results.rows)
@@ -194,7 +197,7 @@ router.post('/register/', async (req, res) => {
  *         description: Successfully updated
  */
 
-router.put('/:id/', async (req, res) => {
+router.put('/:id/', requireLogin, async (req, res) => {
     try {
         const { id } = req.params
         const { firstName } = req.query
@@ -233,7 +236,7 @@ router.put('/:id/', async (req, res) => {
  *         description: Successfully deleted
  */
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireLogin, async (req, res) => {
     try {
         const { id } = req.params
         await db.query('DELETE FROM customers WHERE customer_id = $1', [id])

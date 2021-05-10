@@ -52,5 +52,9 @@ module.exports = {
         return release.apply(client)
       }
       return client
+    },
+    // access pool from other files
+    pool() {
+      return pool
     }
   }
