@@ -3,34 +3,38 @@ const mountRouters = require('./routes')
 const passport = require('passport')
 const passportConfig = require('./routes/passportConfig')
 const session = require('express-session');
-//const pgSession = require('connect-pg-simple')(session);
-//const db = require('./db')
+const pgSession = require('connect-pg-simple')(session);
+const db = require('./db')
 const flash = require('connect-flash');
 const cors = require('cors')
 const path = require('path')
 require('dotenv').config();
+var uid = require('uid-safe')
 
 const app = express()
 // if HEROKU, else local
 const port = process.env.PORT || 5000;
 
-// Config
-
 // Authentication strategy
 passportConfig(passport);
+
+const store = new pgSession({
+  pool : db.pool(),
+})
 
 
 // Middleware
 app.use(require('morgan')('combined'));
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(session({
-/*     store: new pgSession({
-    pool : db,
-    tableName : 'session'
-  }), */
+  store: store,
   secret: process.env.COOKIE_SECRET, 
+  genid: uid(18, function (err, string) {
+    if (err) {throw err}
+    return string;
+  }),
   resave: false, 
-  saveUninitialized: false 
+  saveUninitialized: false,
 })); 
 app.use(cors({
   origin: 'http://localhost:3000',
