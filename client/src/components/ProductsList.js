@@ -1,19 +1,35 @@
 import ProductsListItem from "./ProductsListItem.js";
-import React, { useEffect, useState } from 'react'
+import { splitProductListArray } from "./productListFunctions";
+import React, { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import SortBar from "./Sort.js";
+import ProductsListPageBar from "./ProductsListPageBar.js";
 
 export default function ProductsList(props) {
-  let categoryIndex = (useRouteMatch().params.categoryId)
-  const [category, setCategory] = useState('');
+  let categoryIndex = useRouteMatch().params.categoryId;
+  const [category, setCategory] = useState("");
+  const [productArray, setProductArray] = useState(props.products)
+  const [itemsPerPage, setItemsPerPage] = useState(25);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  let searchTermText
-    if (props.search) {
-      searchTermText = 'Search for: ' + props.search
+  const dividedArray = splitProductListArray(props.products, itemsPerPage)
+
+  useEffect(() => {
+    if (Array.isArray(props.products)) {
+      setProductArray(dividedArray[currentPage])
     } else {
-      searchTermText = undefined
+      setProductArray()
     }
-  let data
+  }, [currentPage, dividedArray, itemsPerPage, props.products])
+
+  let searchTermText;
+  if (props.search) {
+    searchTermText = "Search for: " + props.search;
+  } else {
+    searchTermText = undefined;
+  }
+
+  let data;
 
   useEffect(() => {
     const productCategories = [
@@ -26,22 +42,21 @@ export default function ProductsList(props) {
       "Clothes",
       "Sports & Outdoors",
       "Health & Beauty",
-    ]; 
+    ];
 
     function applyCategory() {
       if (productCategories[categoryIndex] !== undefined) {
-        setCategory(`Category: ${productCategories[categoryIndex]}`)
+        setCategory(`Category: ${productCategories[categoryIndex]}`);
       }
       if (searchTermText !== undefined) {
-        setCategory('')
+        setCategory("");
       }
     }
     applyCategory();
-  }, [category, categoryIndex, searchTermText])
+  }, [category, categoryIndex, searchTermText]);
 
-
-  if (Array.isArray(props.products)) {
-    data = props.products.map(function (product, index) {
+  if (Array.isArray(productArray)) {
+    data = productArray.map(function (product, index) {
       return (
         <ProductsListItem
           data={props.products[index]}
@@ -51,30 +66,36 @@ export default function ProductsList(props) {
       );
     });
   } else if (props.products === "Loading...") {
-    data = "Loading..."
-  }else {
+    data = "Loading...";
+  } else {
     data = "No products found";
   }
 
-  let numberOfResults = props.products.length
+  let numberOfResults = props.products.length;
 
-
-
-  let allProducts
+  let allProducts;
   if (!searchTermText && !category) {
-    allProducts =  (<React.Fragment>
-    <h3>All products</h3>
-    <p>Limit results by searching for a product or filter by a category above.</p>
-    </React.Fragment>
-    )
+    allProducts = (
+      <React.Fragment>
+        <h3>All products</h3>
+        <p>
+          Limit results by searching for a product or filter by a category
+          above.
+        </p>
+      </React.Fragment>
+    );
   }
 
   return (
     <div className="Content">
-      <h3>{category}{searchTermText}</h3>
+      <h3>
+        {category}
+        {searchTermText}
+      </h3>
       {allProducts}
       <h4>{numberOfResults} Results</h4>
-      <SortBar updateSearch={props.updateSearch}/>
+      <SortBar updateSearch={props.updateSearch} />
+      <ProductsListPageBar pages={dividedArray.length} />
       <div className="ProductListContainer">{data}</div>
     </div>
   );

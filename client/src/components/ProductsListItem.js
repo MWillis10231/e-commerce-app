@@ -1,27 +1,34 @@
 import { Link } from "react-router-dom";
-import productImages from "../javascript/productimages";
+import React from "react"
 
 export default function ProductsListItem(props) {
-  let image = productImages[props.data.category];
-
-  return (
-    <div className="ProductListItemContainer">
-      <div className="ProductListItemPictureContainer">
-        <figure>
-          <img src={image} className="ProductListItemPicture" alt="Product" />
-        </figure>
+  if (props.data) {
+    const image = `/api/images/${props.data.image}`
+    return (
+      <div className="ProductListItemContainer">
+        <div className="ProductListItemPictureContainer">
+          <figure>
+            <img src={image} className="ProductListItemPicture" alt="Product" />
+          </figure>
+        </div>
+        <div className="ProductListItemContent">
+          <h4 className="Title">
+            <Link to={`/products/${props.data.product_id}`} className="Title">
+              {props.data.name}
+            </Link>
+          </h4>
+          <h5>
+            {props.data.score/10}/5, {props.data.ratings}
+          </h5>
+          <p className="Price">${props.data.price}</p>
+        </div>
       </div>
-      <div className="ProductListItemContent">
-        <h4 className="Title">
-          <Link to={`/products/${props.data.product_id}`} className="Title">
-            {props.data.name}
-          </Link>
-        </h4>
-        <h5>
-          {props.data.score}/5, {props.data.ratings}
-        </h5>
-        <p className="Price">${props.data.price}</p>
+    );
+  } else {
+    return (
+      <div className="ProductListItemContainer">
+        <div>Loading...</div>
       </div>
-    </div>
-  );
+    )
+  }
 }

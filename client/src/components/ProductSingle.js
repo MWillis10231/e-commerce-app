@@ -16,7 +16,7 @@ export default function ProductSingle(props) {
   }, [match.params.productId]);
 
   let history = useHistory();
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState();
   const [productAmount, setProductAmount] = useState(0)
 
   async function addProduct(data = {}) {
@@ -70,7 +70,13 @@ export default function ProductSingle(props) {
   }
 
   if (product) {
-    const image = `url(api/images/${product.image})`
+    const image = `/api/images/${product.image}`
+    if (product.category === 1 || product.category === 2) {
+      brand = product.creator
+    } else {
+      brand = product.company
+    }
+
     data = (
       <React.Fragment>
         <figure className="ProductImageContainerBig" id="BigImageContainer">
@@ -84,11 +90,11 @@ export default function ProductSingle(props) {
           </figure>
         </div>
         <div className="ProductInformationContainer">
-          <h3>{product.name}</h3>
+          <h3 className="ProductName">{product.name}</h3>
           <h4>{brand}, {product.year}</h4>
-          <h5>{product.score}/5, {product.ratings} reviews</h5>
+          <h5>{product.score/10}/5, {product.ratings} reviews</h5>
           <h4>Price: {product.price}$</h4>
-          <p>
+          <p className="ProductDescription">
             {product.description}
           </p> 
         </div>

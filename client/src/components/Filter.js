@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Fragment, useState } from "react";
 import RatingNumbers from "./RatingNumbers";
+import React from "react"
 
 export default function FilterBar(props) {
   const [filter, setFilter] = useState({

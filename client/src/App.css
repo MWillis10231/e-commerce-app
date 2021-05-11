@@ -261,6 +261,62 @@ input[type="submit" i] {
   text-align: center;
 }
 
+.ProductsListPageSelector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ProductsListPageSelector h4 {
+  margin-bottom: 0.25rem;
+}
+
+.ProductsListPageSelectorContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.ProductsListPageSelectorContainer ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  list-style-type: none;
+  width: 50%;
+  margin: 0;
+  padding: 0 2rem;
+}
+
+.ProductsListPageSelectorContainer ul li {
+  font-weight: bold;
+  text-decoration: underline;
+  padding: 0 0.25rem;
+  cursor: pointer;
+}
+
+.ProductsListPageSelectorContainer ul li:hover {
+  color: #ed2839;
+}
+
+.ProductsListPageItemsControl {
+  width: 50%;
+  border-left: 1px solid #ed2839;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 2rem;
+}
+
+.ProductsListPageItemsControl label {
+  font-weight: normal;
+  text-decoration: none;
+  padding: 0 0.25rem;
+}
+
+.ProductsListPageItemsControl input {
+  padding: 0;
+  text-align: center;
+}
+
 /* Individual Products */
 
 .ProductContainer {
@@ -286,6 +342,15 @@ input[type="submit" i] {
   margin: 1%;
 }
 
+.ProductImageContainer figure figcaption {
+  cursor: pointer;
+}
+
+.ProductImageContainer figure figcaption:hover {
+  text-decoration: underline solid;
+  cursor: pointer;
+}
+
 .ProductImage {
   width: 100%;
 }
@@ -308,6 +373,15 @@ input[type="submit" i] {
   padding: 2%;
   margin: 2%;
   background-color: rgba(255, 255, 255, 1);
+}
+
+.ProductImageContainerBig figcaption {
+  cursor: pointer;
+}
+
+.ProductImageContainerBig figcaption:hover {
+  text-decoration: underline solid;
+  cursor: pointer;
 }
 
 .ProductInformationContainer {

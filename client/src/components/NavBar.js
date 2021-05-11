@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import SearchBar from './SearchBar'
+import React from "react"
 
 export default function NavBar(props) {
     let signInLogOut

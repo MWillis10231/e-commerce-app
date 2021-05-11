@@ -1,3 +1,5 @@
+import React from "react"
+
 export default function ProfileData(props) {
   return (
     <div>
