@@ -18,7 +18,7 @@ export default function Login(props) {
     }
 
     async function submitData(data = {}) {
-        const response = await fetch('/account/login/', {
+        const response = await fetch('/api/account/login/', {
           method: 'POST',
           mode: 'cors',
           credentials: 'include',

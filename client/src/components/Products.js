@@ -51,7 +51,7 @@ export default function Products(props) {
       if (searchString === "") {
         //console.log(`http://localhost:5000${location + searchLocation}`);
         const data = await fetch(
-          `${location + searchLocation}`
+          `/api/${location + searchLocation}`
         );
         const products = await data.json();
         setProducts(products);
@@ -60,7 +60,7 @@ export default function Products(props) {
         //  `http://localhost:5000${location}${searchTerm}${searchString}`
         //);
         const data = await fetch(
-          `${location}${searchTerm}${searchString}`
+          `/api/${location}${searchTerm}${searchString}`
         );
         const products = await data.json();
         setProducts(products);

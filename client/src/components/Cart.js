@@ -25,7 +25,7 @@ export default function Cart(props) {
       const fetchCart = async () => {
         setCart("Loading");
         // it needs to include credentials on any request that requires passport otherwise it won't show
-        const cartData = await fetch("/cart/", {
+        const cartData = await fetch("/api/cart/", {
           credentials: "include",
         });
         const cartContents = await cartData.json();
@@ -47,7 +47,7 @@ export default function Cart(props) {
   //this is a bit inefficient, because we are fetching now and then fetching again in each CartProduct
   async function fetchProductPrice(id) {
     const fetchProduct = await fetch(
-      `/products/${id}`
+      `/api/products/${id}`
     );
     const product = await fetchProduct.json();
     return product.price;
@@ -108,7 +108,7 @@ export default function Cart(props) {
 
   async function deleteCart() {
     const response = await fetch(
-      `/cart/${cart.id}/delete/`,
+      `/api/cart/${cart.id}/delete/`,
       {
         method: "DELETE",
         credentials: "include",
@@ -121,7 +121,7 @@ export default function Cart(props) {
 
   async function submitCart() {
     const response = await fetch(
-      `/cart/${cart.id}/checkout/`,
+      `/api/cart/${cart.id}/checkout/`,
       {
         method: "POST",
         credentials: "include",

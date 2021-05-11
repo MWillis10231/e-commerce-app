@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
-import productImages from '../javascript/productimages'
 
 export default function ProductSingle(props) {
   let match = useRouteMatch();
@@ -8,7 +7,7 @@ export default function ProductSingle(props) {
   useEffect(() => {
     const fetchProduct = async () => {
       const fetchProduct = await fetch(
-        `/products/${match.params.productId}`
+        `/api/products/${match.params.productId}`
       );
       const product = await fetchProduct.json();
       setProduct(product);
@@ -21,7 +20,7 @@ export default function ProductSingle(props) {
   const [productAmount, setProductAmount] = useState(0)
 
   async function addProduct(data = {}) {
-    const response = await fetch('/cart/', {
+    const response = await fetch('/api/cart/', {
       method: 'PUT',
       mode: 'cors',
       credentials: 'include',
@@ -55,7 +54,6 @@ export default function ProductSingle(props) {
 
   let data;
   let brand;
-  let image;
 
   function onQuantityChange(event) {
     setProductAmount(event.target.value)
@@ -72,15 +70,7 @@ export default function ProductSingle(props) {
   }
 
   if (product) {
-    // if category is book, or audio/visual, set the "brand" to a person/author/director rather than a company
-    if (product.category === 1 || product.category === 2) {
-      brand = product.creator
-    } else {
-      brand = product.company
-    }
-    // set up the image relevant to the category too
-    image = productImages[product.category]
-
+    const image = `url(api/images/${product.image})`
     data = (
       <React.Fragment>
         <figure className="ProductImageContainerBig" id="BigImageContainer">

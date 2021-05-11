@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { format } from 'date-fns'
 
 export default function OrderListItem(props) {
 
@@ -11,7 +12,7 @@ export default function OrderListItem(props) {
       setOrder('Loading')
       // it needs to include credentials on any request that requires passport otherwise it won't show
       // get the latest order by the customer
-      const latestOrderId = await fetch(`/orders/${props.customerId}/`, {credentials: "include"})
+      const latestOrderId = await fetch(`/api/orders/${props.customerId}/`, {credentials: "include"})
       const latestOrder = await latestOrderId.json()
       setOrder(latestOrder[0])
     };
@@ -25,7 +26,7 @@ export default function OrderListItem(props) {
         console.log(order)
         setSingleOrder("Loading");
         const orders = await fetch(
-          `/orders/${props.customerId}/${order.order_id}`,
+          `/api/orders/${props.customerId}/${order.order_id}`,
           { credentials: "include" }
         );
         const orderData = await orders.json();
@@ -67,15 +68,27 @@ export default function OrderListItem(props) {
   let orderNumber
   let orderDate
   let deliveryDate
+  let formattedOrderDate
+  let formattedDeliveryDate
 
   if (order && order.order_id) {
     orderNumber = order.order_id;
-    orderDate = order.date_ordered;
-    deliveryDate = order.date_delivered
+    orderDate = new Date(order.date_ordered);
+    deliveryDate = new Date(order.date_delivered)
+    console.log(orderDate)
+    formattedOrderDate = format(orderDate, 'dd/MM/yyyy')
+    console.log(formattedOrderDate)
+    formattedDeliveryDate = format(deliveryDate, 'dd/MM/yyyy')
   } else {
     orderNumber = "N/A";
     orderDate = "N/A";
     deliveryDate = "N/A";
+    formattedOrderDate = "N/A"
+    formattedDeliveryDate = "N/A"
+  }
+
+  if (!order.date_delivered) {
+    formattedDeliveryDate = "N/A"
   }
 
   return (
@@ -88,8 +101,8 @@ export default function OrderListItem(props) {
         </tr>
         <tr>
             <td>{orderNumber}</td>
-            <td>{orderDate}</td>
-            <td>{deliveryDate}</td>
+            <td>{formattedOrderDate}</td>
+            <td>{formattedDeliveryDate}</td>
         </tr>
       </table>
       <div className="OrderDetailed" id={`detailed${props.id}`}>

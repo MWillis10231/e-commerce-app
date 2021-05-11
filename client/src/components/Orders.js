@@ -3,7 +3,6 @@ import OrderListItem from "./OrderListItem";
 
 export default function Orders(props) {
 let data
-console.log(props.customerOrders)
 
 if (Array.isArray(props.customerOrders)) {
     data = props.customerOrders.map(function (order, index) {

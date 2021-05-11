@@ -81,18 +81,10 @@ router.post('/:cartid/checkout', async (req, res) => {
         try {
             const customerId = req.session.passport.user
             const dateNow = new Date();
-            const year = dateNow.getFullYear();
-            // month is 0 based 
-            const month = dateNow.getMonth()+1;
-            const day = dateNow.getDate();
-            const hours = dateNow.getHours()
-            const minutes = dateNow.getMinutes();
-            const seconds = dateNow.getSeconds();
-            const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
             //create a unique orderId using customerId + ms of order
             const orderId = uuidv4();
             // insert a new order with this information
-            await db.query('INSERT INTO orders(order_id, customer_id, date_ordered) values($1, $2, $3)', [orderId, customerId, formattedDate])
+            await db.query('INSERT INTO orders(order_id, customer_id, date_ordered) values($1, $2, $3)', [orderId, customerId, dateNow])
             // update orders_products with each product & quantity relevant to the order
             req.session.cart.items.forEach(item => {
                 const productId = item.id;

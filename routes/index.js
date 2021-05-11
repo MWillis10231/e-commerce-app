@@ -3,6 +3,7 @@ const products = require('./products')
 const cart = require('./cart')
 const orders = require('./orders')
 const account = require('./account')
+const images = require('./images')
 var swaggerJSDoc = require('swagger-jsdoc');
 
 // Secure routes
@@ -37,7 +38,7 @@ var swaggerDefinition = {
   const swaggerSpec = swaggerJSDoc(options);
 
 module.exports = app => {
-  app.get('/', (req, res) => {
+  app.get('/api', (req, res) => {
     var options = {
         root: __dirname,
     }
@@ -50,12 +51,13 @@ module.exports = app => {
             console.log('Sent:', filename)
         }
     })})
-    app.use('/customers', customers)
-    app.use('/products', products)
-    app.use('/cart', requireLogin, cart)
-    app.use('/orders', requireLogin, orders)
-    app.use('/account', account)
-    app.get('/swagger.json', function(req, res) {
+    app.use('/api/customers', customers)
+    app.use('/api/products', products)
+    app.use('/api/images', images)
+    app.use('/api/cart', requireLogin, cart)
+    app.use('/api/orders', requireLogin, orders)
+    app.use('/api/account', account)
+    app.get('/api/swagger.json', function(req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.send(swaggerSpec);
       });

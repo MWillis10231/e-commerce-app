@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { format, parseISO } from 'date-fns'
 
 export default function OrderListItem(props) {
   const [singleOrder, setSingleOrder] = useState("");
@@ -23,7 +24,7 @@ export default function OrderListItem(props) {
       setSingleOrder("Loading");
       // it needs to include credentials on any request that requires passport otherwise it won't show
       const orders = await fetch(
-        `/orders/${props.customerId}/${props.data.order_id}`,
+        `/api/orders/${props.customerId}/${props.data.order_id}`,
         { credentials: "include" }
       );
       const orderData = await orders.json();
@@ -38,7 +39,7 @@ export default function OrderListItem(props) {
   if (Array.isArray(singleOrder)) {
     data = singleOrder.map(function (order, index) {
       return (
-        <table>
+        <table key={index}>
           <tr>
             <th>Item #</th>
             <th>Name</th>
@@ -65,6 +66,13 @@ export default function OrderListItem(props) {
   let orderNumber = props.data.order_id;
   let orderDate = props.data.date_ordered;
   let deliveryDate = props.data.date_delivered
+  console.log(orderDate)
+  //let formattedOrderDate = format(parseISO(orderDate), 'dd/MM/yyyy')
+  //let formattedDeliveryDate = format(parseISO(deliveryDate), 'dd/MM/yyyy')
+
+  if (!props.data.date_delivered) {
+    //formattedDeliveryDate = "N/A"
+  }
 
   function toggleDetailedInfo() {
     if (displayDetailed === true) {

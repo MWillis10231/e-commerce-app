@@ -10,7 +10,7 @@ module.exports = router;
 router.get("/category/:categoryId", async (req, res) => {
   const { categoryId } = req.params;
   const results = await db.query(
-    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year FROM products, companies WHERE products.company_id = companies.company_id AND category = $1",
+    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year, products.image FROM products, companies WHERE products.company_id = companies.company_id AND category = $1",
     [categoryId]
   );
   if (results.rows != 0) {
@@ -24,7 +24,7 @@ router.get("/category/:categoryId", async (req, res) => {
 
 router.get("/", async (req, res) => {
   const results = await db.query(
-    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year FROM products, companies WHERE products.company_id = companies.company_id ORDER BY stock_amount;"
+    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year, products.image FROM products, companies WHERE products.company_id = companies.company_id ORDER BY stock_amount;"
   );
   res.send(results.rows);
 });
@@ -173,7 +173,7 @@ router.get("/search", async (req, res) => {
   console.log(queryArray);
 
   let queryBase =
-    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year FROM products, companies WHERE products.company_id = companies.company_id";
+    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year, products.image FROM products, companies WHERE products.company_id = companies.company_id";
   let newQuery = `${queryBase}${queryFilter}${orderFilter}`;
 
   console.log(newQuery);
@@ -192,7 +192,7 @@ router.get("/search", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const results = await db.query(
-    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year FROM products, companies WHERE products.company_id = companies.company_id AND product_id = $1",
+    "SELECT products.product_id, products.name, products.stock_amount, companies.name AS company, products.description, products.price, products.category, products.score, products.ratings, products.creator, products.year, products.image FROM products, companies WHERE products.company_id = companies.company_id AND product_id = $1",
     [id]
   );
   if (results.rows != 0) {

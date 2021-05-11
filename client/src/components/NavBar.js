@@ -17,7 +17,7 @@ export default function NavBar(props) {
 
     async function submitLogout(event) {
         try {
-            const response = await fetch('/account/logout/', {
+            const response = await fetch('/api/account/logout/', {
                 method: 'GET',
                 mode: 'cors',
                 credentials: 'include',
