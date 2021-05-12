@@ -1,16 +1,15 @@
-import { Link, useLocation } from "react-router-dom";
-import { Fragment, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { Fragment } from "react";
 import RatingNumbers from "./RatingNumbers";
 import React from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { changeSearch, selectSearch, resetSearch } from "../features/productSlice";
 
 export default function FilterBar(props) {
-  const [filter, setFilter] = useState({
-    category: 0,
-    pricemin: 0,
-    pricemax: 100,
-    minrating: 0,
-    maxrating: 5,
-  });
+  // get the search from the state, use dispatch
+  const search = useSelector(selectSearch)
+  const dispatch = useDispatch()
+  const history = useHistory();
 
   const productCategories = [
     "All products",
@@ -33,34 +32,19 @@ export default function FilterBar(props) {
           name="category"
           type="radio"
           value={index}
-          onChange={updateFilter}
+          onChange={(e) => {
+            history.push(`/products/category/${index}`)
+            dispatch(changeSearch({category: e.target.value}))
+          }}
         ></input>
         <label htmlFor={`Filter${category}`}>{category}</label>
       </div>
     );
   });
 
-  let location = useLocation();
-
-  //updates the filter object
-  function updateFilter(event) {
-    let name = event.target.name;
-    let value = parseInt(event.target.value);
-    const newFilter = Object.assign({}, filter, {[name]: value})
-    setFilter(newFilter)
-    }
-
-    function sendFilter() {
-      props.updateSearch(filter)
-    }
-
-  let categoryFilter
-  //if (props.category === undefined) {
-    categoryFilter = (<Fragment>        <h4>Filter by Category</h4>
+    const  categoryFilter = (<Fragment>        <h4>Filter by Category</h4>
       {categoryFilterBoxes}</Fragment>)
-  //} else {
-  //  categoryFilter = ''
-  //}
+
 
   return (
     <div className="FilterBar">
@@ -84,8 +68,8 @@ export default function FilterBar(props) {
               maxLength="4"
               step="1"
               required
-              value={filter.pricemin}
-              onChange={updateFilter}
+              value={search.pricemin}
+              onChange={(e) => dispatch(changeSearch({pricemin: e.target.value}))}
             ></input>
           </div>
           <div className="FilterContainer">
@@ -99,8 +83,8 @@ export default function FilterBar(props) {
               maxLength="4"
               step="1"
               required
-              value={filter.pricemax}
-              onChange={updateFilter}
+              value={search.pricemax}
+              onChange={(e) => dispatch(changeSearch({pricemax: e.target.value}))}
             ></input>
           </div>
         </div>
@@ -114,13 +98,13 @@ export default function FilterBar(props) {
               id="RatingMin"
               name="minrating"
               type="range"
-              max="5"
+              max="50"
               min="0"
               step="1"
               default="0"
               required
-              value={filter.minrating}
-              onChange={updateFilter}
+              value={search.minrating}
+              onChange={(e) => dispatch(changeSearch({minrating: e.target.value}))}
             ></input>
           </div>
           <div className="FilterContainer">
@@ -131,27 +115,20 @@ export default function FilterBar(props) {
               id="RatingMax"
               name="maxrating"
               type="range"
-              max="5"
+              max="50"
               min="0"
               step="1"
               default="0"
               required
-              value={filter.maxrating}
-              onChange={updateFilter}
+              value={search.maxrating}
+              onChange={(e) => dispatch(changeSearch({maxrating: e.target.value}))}
             ></input>
           </div>
         </div>
         <br></br>
-        <Link
-          to={{
-            pathname: `${location.pathname}`,
-            search: props.search,
-          }}
-        >
-          <button className="FilterButton" type="submit" onClick={sendFilter}>
-            Apply Filter
+          <button className="FilterButton" type="submit" onClick={() => dispatch(resetSearch())}>
+            Reset Filter
           </button>
-        </Link>
       </form>
     </div>
   );

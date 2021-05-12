@@ -1,77 +1,77 @@
-import ProductsListItem from "./ProductsListItem.js";
 import { splitProductListArray } from "./productListFunctions";
 import React, { useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import SortBar from "./Sort.js";
 import ProductsListPageBar from "./ProductsListPageBar.js";
+import { getAllProducts, selectAllProducts, selectItemsPerPage, selectSearch, updateCategory, selectUseSearch, selectProductStatus, selectCategory } from "../features/productSlice.js";
+import { useSelector, useDispatch } from "react-redux";
+import ProductListContainer from "./ProductListContainer.js";
 
-export default function ProductsList(props) {
-  let categoryIndex = useRouteMatch().params.categoryId;
-  const [category, setCategory] = useState("");
-  const [productArray, setProductArray] = useState(props.products)
-  const [itemsPerPage, setItemsPerPage] = useState(25);
-  const [currentPage, setCurrentPage] = useState(0);
+export default function ProductsList() {
+  const dispatch = useDispatch();
+  const products = (useSelector(selectAllProducts));
+  const productStatus = useSelector(selectProductStatus)
+  const itemsPerPage = useSelector(selectItemsPerPage);
+  const categoryIndex = useRouteMatch().params.categoryId;
+  const search = useSelector(selectSearch)
 
-  const dividedArray = splitProductListArray(props.products, itemsPerPage)
+  // useSearch is true/false depending on whether there is a search or filter currently on
+  const useSearch = useSelector(selectUseSearch)
+  const category = useSelector(selectCategory)
 
+  // get the products on load & dispatch the category to filter the products
+  // if there's a category, set the products to that category instead of the full list
   useEffect(() => {
-    if (Array.isArray(props.products)) {
-      setProductArray(dividedArray[currentPage])
-    } else {
-      setProductArray()
+    if (categoryIndex) {
+      dispatch(updateCategory(categoryIndex))
     }
-  }, [currentPage, dividedArray, itemsPerPage, props.products])
+    if (useSearch) {
+      dispatch(getAllProducts(search))
+    } else if (categoryIndex !== 0) {
+      dispatch(getAllProducts(parseInt(categoryIndex)))
+    } else {
+      dispatch(getAllProducts())
+    }
+    
+  }, [categoryIndex, dispatch, search, useSearch])
 
+  // set the page of products we are currently on
+  const [page, setPage] = useState(0)
+
+  function updatePage(newPage) {
+    setPage(newPage)
+  }
+
+  // divide the products up, 25 per page etc.
+  const dividedArray = splitProductListArray(products, itemsPerPage)
+
+  // calculate the number of results to display
+  let numberOfResults = products.length;
+
+  // if there is search term text, display it
   let searchTermText;
-  if (props.search) {
-    searchTermText = "Search for: " + props.search;
+  if (search.name) {
+    searchTermText = "Search for: " + search.name;
   } else {
     searchTermText = undefined;
   }
 
-  let data;
+  let content
+  //<ProductListContainer products={products}/>
 
-  useEffect(() => {
-    const productCategories = [
-      "All products",
-      "Books",
-      "Audio/Visual",
-      "Electronics",
-      "Home & Garden",
-      "Toys",
-      "Clothes",
-      "Sports & Outdoors",
-      "Health & Beauty",
-    ];
-
-    function applyCategory() {
-      if (productCategories[categoryIndex] !== undefined) {
-        setCategory(`Category: ${productCategories[categoryIndex]}`);
-      }
-      if (searchTermText !== undefined) {
-        setCategory("");
-      }
-    }
-    applyCategory();
-  }, [category, categoryIndex, searchTermText]);
-
-  if (Array.isArray(productArray)) {
-    data = productArray.map(function (product, index) {
+  if (productStatus === "success") {
+    content = dividedArray.map(function (value, index) {
       return (
-        <ProductsListItem
-          data={props.products[index]}
-          key={index}
-          number={index + 1}
-        />
-      );
-    });
-  } else if (props.products === "Loading...") {
-    data = "Loading...";
+        <ProductListContainer products={value} displayPage={index} currentPage={page}/>
+      ) 
+    })
+  } else if (productStatus === "loading") {
+    content = "Loading...";
+    numberOfResults = "Loading"
   } else {
-    data = "No products found";
+    content = "No products found";
+    numberOfResults = 0
   }
-
-  let numberOfResults = props.products.length;
 
   let allProducts;
   if (!searchTermText && !category) {
@@ -90,13 +90,13 @@ export default function ProductsList(props) {
     <div className="Content">
       <h3>
         {category}
-        {searchTermText}
       </h3>
+      <h4>{searchTermText}</h4>
       {allProducts}
       <h4>{numberOfResults} Results</h4>
-      <SortBar updateSearch={props.updateSearch} />
-      <ProductsListPageBar pages={dividedArray.length} />
-      <div className="ProductListContainer">{data}</div>
+      <SortBar />
+      <ProductsListPageBar pages={dividedArray.length} currentPage={page} updatePage={updatePage} />
+      {content}
     </div>
   );
 }

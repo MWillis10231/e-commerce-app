@@ -26,8 +26,7 @@ export default function ProductsListItem(props) {
     );
   } else {
     return (
-      <div className="ProductListItemContainer">
-        <div>Loading...</div>
+      <div>
       </div>
     )
   }

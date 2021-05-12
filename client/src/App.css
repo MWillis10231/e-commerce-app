@@ -117,6 +117,7 @@ h2, h3, h4, h5, h6, p {
 
 .NavBarMini {
 background-color: #ed2839;
+
 }
 
 .NavBarMiniItems {
@@ -263,7 +264,8 @@ input[type="submit" i] {
 
 .ProductsListPageSelector {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
 }
 
@@ -275,46 +277,55 @@ input[type="submit" i] {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
+  width: 50%;
 }
 
 .ProductsListPageSelectorContainer ul {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
   list-style-type: none;
-  width: 50%;
   margin: 0;
-  padding: 0 2rem;
+  padding-left: 0.5rem;
 }
 
 .ProductsListPageSelectorContainer ul li {
-  font-weight: bold;
-  text-decoration: underline;
   padding: 0 0.25rem;
   cursor: pointer;
 }
 
 .ProductsListPageSelectorContainer ul li:hover {
   color: #ed2839;
+  text-decoration: underline;
 }
 
 .ProductsListPageItemsControl {
   width: 50%;
   border-left: 1px solid #ed2839;
   display: flex;
-  justify-content: flex-start;
-  padding: 0 2rem;
-}
-
-.ProductsListPageItemsControl label {
-  font-weight: normal;
-  text-decoration: none;
-  padding: 0 0.25rem;
-}
-
-.ProductsListPageItemsControl input {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   padding: 0;
-  text-align: center;
+}
+
+.ProductsListPageItemsControl ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  list-style-type: none;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+}
+
+.ProductsListPageItemsControl ul li {
+  cursor: pointer;
+}
+
+.ProductsListPageItemsControl ul li:hover {
+  color: #ed2839;
+  text-decoration: underline;
 }
 
 /* Individual Products */

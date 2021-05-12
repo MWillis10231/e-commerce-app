@@ -1,37 +1,44 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import React from "react"
+import { useDispatch } from "react-redux";
+import { changeSearch } from "../features/productSlice";
 
 export default function SortBar(props) {
   const sortCategories = ["price", "pricedesc", "score", "scoredesc"]
-  const [sort, setSort] = useState('')
-  let location = useLocation();
+  const dispatch = useDispatch();
 
   let sortFilterBoxes = sortCategories.map(function (sortCategory, index) {
     let sortCategoryNames = ["Price: Ascending", "Price: Descending", "Score: Ascending", "Score: Descending"]
-    return (
-      <div className="SortCategoryItem">
-        <input
-          className="SortInput"
-          id={`Sort${sortCategory}`}
-          name="sortoption"
-          type="radio"
-          value={sortCategory}
-          onMouseEnter={callUpdateSearch}
-          onChange={callUpdateSearch}
-        ></input>
-        <label for={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
-      </div>
-    );
+    if (index === 0 || index === 2) {
+      return (
+        <div className="SortCategoryItem">
+          <input
+            className="SortInput"
+            id={`Sort${sortCategory}`}
+            name="sortoption"
+            type="radio"
+            value={sortCategory}
+            onChange={(e) => dispatch(changeSearch({sort: e.target.value,
+            sortDesc: null}))}
+          ></input>
+          <label for={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
+        </div>
+        );
+    } else {
+      return (
+        <div className="SortCategoryItem">
+          <input
+            className="SortInput"
+            id={`Sort${sortCategory}`}
+            name="sortoption"
+            type="radio"
+            value={sortCategory}
+            onChange={(e) => dispatch(changeSearch({sort: null, sortDesc: e.target.value}))}
+          ></input>
+          <label for={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
+        </div>  
+      );
+    }
   });
-
-  function callUpdateSearch(event) {
-    setSort({sort: event.target.value})
-  }
-
-  function sendUpdateSearch() {
-    props.updateSearch(sort)
-  }
 
   return (
     <div className="SortBar">
@@ -39,16 +46,6 @@ export default function SortBar(props) {
         <div className="SortRadio">
         {sortFilterBoxes}
         </div>
-        <Link
-          to={{
-            pathname: `${location.pathname}`,
-            search: props.search,
-          }}
-        >
-        <button className="FilterButton" type="submit" onClick={sendUpdateSearch}>
-            Apply Filter
-          </button>
-        </Link>
       </form>
     </div>
   );

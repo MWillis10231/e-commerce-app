@@ -1,20 +1,47 @@
 import { Link } from "react-router-dom"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { resetSearch, selectSearch } from "../features/productSlice";
 
 export default function NavBarMini(props) {
-  
+    const dispatch = useDispatch();
+    const search = useSelector(selectSearch);
+    const category = search.category
+    const [active, setActive] = useState(null)
+    
+    useEffect(() => {
+      setActive(document.getElementById(`NavbarMini${category}`))
+    }, [category])
+
+    const productCategories = [
+      "All products",
+      "Books",
+      "Audio/Visual",
+      "Electronics",
+      "Home & Garden",
+      "Toys",
+      "Clothes",
+      "Sports & Outdoors",
+      "Health & Beauty",
+    ];
+
+    if (active) {
+      productCategories.forEach(function (element, index) {
+        document.getElementById(`NavbarMini${index}`).style.backgroundColor = "#ed2839"
+      }); 
+      active.style.backgroundColor = "#d01121"
+    }
+
+    const links = productCategories.map(function (value, index) {
+        return (
+          <li id={`NavbarMini${index}`} key={`NavbarMini${index}`}><Link to={`/products/category/${index}`} className="NavBarLink" onClick={() => dispatch(resetSearch())}>{value}</Link></li>
+        )
+    })
+
     return (
       <nav className="NavBarMini"> 
         <ul className="NavBarMiniItems">
-          <li><Link to="/products/" className="NavBarLink" onClick={props.navigationCounter}>All</Link></li>
-          <li><Link to="/products/category/1" className="NavBarLink" onClick={props.updateCustomerData}>Books</Link></li>
-          <li><Link to="/products/category/2" className="NavBarLink" onClick={props.updateCustomerData}>Audio/Visual</Link></li>
-          <li><Link to="/products/category/3" className="NavBarLink" onClick={props.updateCustomerData}>Electronics</Link></li>
-          <li><Link to="/products/category/4" className="NavBarLink">Home &#38; Garden</Link></li>
-          <li><Link to="/products/category/5" className="NavBarLink">Toys</Link></li>
-          <li><Link to="/products/category/6" className="NavBarLink">Clothes</Link></li>
-          <li><Link to="/products/category/7" className="NavBarLink">Sports &#38; Outdoors</Link></li>
-          <li><Link to="/products/category/8" className="NavBarLink">Health &#38; Beauty</Link></li>
+          {links}
         </ul>
       </nav>
     );
