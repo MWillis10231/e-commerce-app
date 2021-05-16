@@ -50,16 +50,12 @@ What I didn't enjoy was the Passport section - this was badly documented and con
 
 ## Known issues
 
-* Filters only work on the search function (an issue with my routing)
 * Editing your profile does nothing at present
 * It's not at all optimised for mobile (just like real Amazon)
 
 ## Planned Improvements:
 
 * More data validation
-* A logo (design in progress)
-* A nicer looking rating system with stars
-* More unique / personalised products (even if we use fewer)
 * Better sign-up system - maybe with email verification
 * Option to enter an "address" for delivery
 * SWAGGER API documentation (partially implemented)
