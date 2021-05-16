@@ -13,7 +13,7 @@ Live view: https://nile-shopping.herokuapp.com/
 ## Libraries/Frameworks/Runtimes
 * PostgreSQL
 * Express
-* React
+* React / Redux
 * Node
 * Stripe
 * Passport
