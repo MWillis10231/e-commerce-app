@@ -101,7 +101,7 @@ export default function FilterBar(props) {
               type="range"
               max="50"
               min="0"
-              step="1"
+              step="10"
               default="0"
               required
               value={search.minrating}
@@ -118,7 +118,7 @@ export default function FilterBar(props) {
               type="range"
               max="50"
               min="0"
-              step="1"
+              step="10"
               default="0"
               required
               value={search.maxrating}
