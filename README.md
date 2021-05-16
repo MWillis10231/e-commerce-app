@@ -64,5 +64,6 @@ I revisited this project to improve the state - my prior implementation was supe
 * Option to enter an "address" for delivery
 * SWAGGER API documentation (partially implemented)
 * More and better tests
+* Aria labels
 
 ### Credits
