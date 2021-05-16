@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React from "react"
+import { useDispatch } from "react-redux";
+import { signIn } from "../features/userSlice";
+import { useHistory } from "react-router";
 
 export default function RegisterForm(props) {
-  const [counter, setCounter] = useState(0)
+  const dispatch = useDispatch();
+  const [submitDisabled, setSubmitDisabled] = useState(true)
+  const history = useHistory();
 
-  useEffect(() => {
-    if (!document.getElementById('firstName').value || !document.getElementById('lastName').value || !document.getElementById('email').value || !document.getElementById('username').value || !document.getElementById('password').value === 0 || !document.getElementById('rpassword').value) {
-      document.getElementById("RegisterButton").disabled = true;
-    } else {
-      document.getElementById("RegisterButton").disabled = false;
-    }
-  })
-
-  function updateForm() {
-    // atm this just makes the DOM update // checks if all the fields are filled out after every field is altered
-    setCounter(counter + 1)
+  function checkDisabled() {
+    if (!document.getElementById("username").value || !document.getElementById("password").value) {
+      setSubmitDisabled(true);
+  } else {
+    setSubmitDisabled(false)
   }
+}
 
   async function submitData(data = {}) {
     const response = await fetch('/api/customers/register/', {
@@ -25,6 +25,17 @@ export default function RegisterForm(props) {
       headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'},
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
+      body: new URLSearchParams(data),
+    });
+    return response;
+  }
+
+  async function submitLogin(data = {}) {
+    const response = await fetch("/api/account/login/", {
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(data),
     });
     return response;
@@ -41,10 +52,25 @@ export default function RegisterForm(props) {
       // should put more data checking here
       let form = document.getElementById('signup');
       let formData = new FormData(form)
-      submitData(formData).then(response => console.log(response));
+      submitData(formData).then(response => {
+        //console.log(response)
+        if (response.ok) {
+          // log in as well
+          submitLogin({username: document.getElementById('username').value, password: document.getElementById('password').value}).then(response => {
+            if (response.ok === true) {
+              response.json().then((response) => {
+                //dispatch to Redux
+                dispatch(signIn(response));
+                // redirect
+                history.push('/');
+              });
+            }
+          })
+        }
+      });
       event.preventDefault();
     } catch (error) {
-      alert(error)
+      alert(Error)
       console.log(error)
       event.preventDefault();
     }  
@@ -54,30 +80,30 @@ export default function RegisterForm(props) {
     <form onSubmit={submitRegistration} id="signup" name="signup">
             <div className="FormItem">
                 <label htmlFor="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" onInput={updateForm} required/>
+                <input type="text" id="firstName" name="firstName" autoComplete="given-name" onInput={checkDisabled} required/>
             </div>
             <div className="FormItem">
                 <label htmlFor="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" onInput={updateForm} required/>
+                <input type="text" id="lastName" name="lastName" autoComplete="family-name" onInput={checkDisabled} required/>
             </div>
             <div className="FormItem">
                 <label htmlFor="email">Email Address</label>
-                <input type="email" id="email" name="email" onInput={updateForm} required/>
+                <input type="email" id="email" name="email" autoComplete="email" onInput={checkDisabled} required/>
             </div>
             <div className="FormItem">
                 <label htmlFor="username">Username</label>
-                <input type="text" id="username" name="username" onInput={updateForm} required/>
+                <input type="text" id="username" name="username" autoComplete="username" onInput={checkDisabled} required/>
             </div>
             <div className="FormItem">
                 <label htmlFor="password">Password</label>
-                <input type="password" id="password" name="password" onInput={updateForm} required/>
+                <input type="password" id="password" name="password" autoComplete="new-password" onInput={checkDisabled} required/>
             </div>
             <div className="FormItem">
                 <label htmlFor="rpassword">Repeat Password</label>
-                <input type="password" id="rpassword" name="rpassword" onInput={updateForm} required/>
+                <input type="password" id="rpassword" name="rpassword" autoComplete="new-password" onInput={checkDisabled} required/>
             </div>
             <div className="FormItem">
-                <input className="SubmitButton" id="RegisterButton" type="submit" value="Sign-up"/>
+                <input className="SubmitButton" id="RegisterButton" type="submit" value="Sign-up" disabled={submitDisabled}/>
             </div>
         </form>
   );

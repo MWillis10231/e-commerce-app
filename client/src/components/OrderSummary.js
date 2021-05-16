@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { format } from 'date-fns'
 import React from "react"
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/userSlice";
+import OrderItemTable from "./OrderItemTable";
 
 export default function OrderListItem(props) {
-
   const [singleOrder, setSingleOrder] = useState("");
   const [order, setOrder] = useState('No order')
+  const user = useSelector(selectUser)
 
   //loads the latest orderId of a customer
   useEffect(() => {
@@ -13,12 +16,12 @@ export default function OrderListItem(props) {
       setOrder('Loading')
       // it needs to include credentials on any request that requires passport otherwise it won't show
       // get the latest order by the customer
-      const latestOrderId = await fetch(`/api/orders/${props.customerId}/`, {credentials: "include"})
+      const latestOrderId = await fetch(`/api/orders/${user.id}/`, {credentials: "include"})
       const latestOrder = await latestOrderId.json()
       setOrder(latestOrder[0])
     };
     fetchOrder();
-  }, [props.customerId]);
+  }, [user.id]);
 
   // loads the products associated with that order
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function OrderListItem(props) {
         console.log(order)
         setSingleOrder("Loading");
         const orders = await fetch(
-          `/api/orders/${props.customerId}/${order.order_id}`,
+          `/api/orders/${user.id}/${order.order_id}`,
           { credentials: "include" }
         );
         const orderData = await orders.json();
@@ -35,31 +38,12 @@ export default function OrderListItem(props) {
       }
     }
     getOrderInfo();
-  }, [order, props.customerId])
+  }, [order, user.id])
 
   let data;
   // maps the order into a table
   if (Array.isArray(singleOrder)) {
-    data = singleOrder.map(function (order, index) {
-      return (
-        <table>
-          <tr>
-            <th>Item #</th>
-            <th>Name</th>
-            <th>Product ID</th>
-            <th>Company</th>
-            <th>Quantity</th>
-          </tr>
-          <tr>
-            <td>{index + 1}</td>
-            <td>{order.product_name}</td>
-            <td>{order.product_id}</td>
-            <td>{order.company_name}</td>
-            <td>{order.quantity}</td>
-          </tr>
-        </table>
-      );
-    });
+    data = <OrderItemTable singleOrder={singleOrder}/>;
   } else if (singleOrder === "Loading...") {
     data = "Loading...";
   } else {

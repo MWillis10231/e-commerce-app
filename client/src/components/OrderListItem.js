@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
 import React from "react"
+import { selectUser } from "../features/userSlice";
+import { useSelector } from "react-redux";
+import OrderItemTable from "./OrderItemTable";
 
 export default function OrderListItem(props) {
   const [singleOrder, setSingleOrder] = useState("");
   const [displayDetailed, setDisplayDetailed] = useState(false)
   const [contents, setContents] = useState('Show details')
+  const user = useSelector(selectUser)
 
   useEffect(() => {
     function toggleInfo(){
@@ -25,39 +29,20 @@ export default function OrderListItem(props) {
       setSingleOrder("Loading");
       // it needs to include credentials on any request that requires passport otherwise it won't show
       const orders = await fetch(
-        `/api/orders/${props.customerId}/${props.data.order_id}`,
+        `/api/orders/${user.id}/${props.data.order_id}`,
         { credentials: "include" }
       );
       const orderData = await orders.json();
       setSingleOrder(orderData);
     };
     fetchOrder();
-  }, [props.customerId, props.data.order_id]);
+  }, [user.id, props.data.order_id]);
 
   let data;
 
   // maps the order into a table
   if (Array.isArray(singleOrder)) {
-    data = singleOrder.map(function (order, index) {
-      return (
-        <table key={index}>
-          <tr>
-            <th>Item #</th>
-            <th>Name</th>
-            <th>Product ID</th>
-            <th>Company</th>
-            <th>Quantity</th>
-          </tr>
-          <tr>
-            <td>{index + 1}</td>
-            <td>{order.product_name}</td>
-            <td>{order.product_id}</td>
-            <td>{order.company_name}</td>
-            <td>{order.quantity}</td>
-          </tr>
-        </table>
-      );
-    });
+    data = <OrderItemTable singleOrder={singleOrder}/>;
   } else if (singleOrder === "Loading...") {
     data = "Loading...";
   } else {
@@ -68,11 +53,11 @@ export default function OrderListItem(props) {
   let orderDate = props.data.date_ordered;
   let deliveryDate = props.data.date_delivered
   console.log(orderDate)
-  //let formattedOrderDate = format(parseISO(orderDate), 'dd/MM/yyyy')
-  //let formattedDeliveryDate = format(parseISO(deliveryDate), 'dd/MM/yyyy')
+  let formattedOrderDate = format(new Date(orderDate), 'dd/MM/yyyy-HH:mm')
+  let formattedDeliveryDate = format(new Date(deliveryDate), 'dd/MM/yyyy-HH-mm')
 
   if (!props.data.date_delivered) {
-    //formattedDeliveryDate = "N/A"
+    formattedDeliveryDate = "N/A"
   }
 
   function toggleDetailedInfo() {
@@ -93,8 +78,8 @@ export default function OrderListItem(props) {
         </tr>
         <tr>
             <td>{orderNumber}</td>
-            <td>{orderDate}</td>
-            <td>{deliveryDate}</td>
+            <td>{formattedOrderDate}</td>
+            <td>{formattedDeliveryDate}</td>
         </tr>
       </table>
       <button className="SubmitButton" onClick={toggleDetailedInfo}>{contents}</button>

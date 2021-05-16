@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useRouteMatch, useHistory } from "react-router-dom";
+import { addCartItem } from "../features/cartSlice";
+import Ratings from "./Ratings";
 
 export default function ProductSingle(props) {
-  let match = useRouteMatch();
+  const match = useRouteMatch();
+  const dispatch = useDispatch()
+  const history = useHistory();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -15,9 +20,9 @@ export default function ProductSingle(props) {
     fetchProduct();
   }, [match.params.productId]);
 
-  let history = useHistory();
+  
   const [product, setProduct] = useState();
-  const [productAmount, setProductAmount] = useState(0)
+  const [productAmount, setProductAmount] = useState(1)
 
   async function addProduct(data = {}) {
     const response = await fetch('/api/cart/', {
@@ -31,24 +36,30 @@ export default function ProductSingle(props) {
   }
 
   async function submitAddProduct(event) {
+    event.preventDefault();
     // preventDefault stops the onsubmit default getReq, which would GET (incl. putting data in url)
     try {
       // get quantity from the form
-        let quantity = document.getElementById('quantity').value;
+        const quantity = document.getElementById('quantity').value;
       // get productid from the state
-        let productId = product.product_id;
-        console.log(quantity)
-        console.log(productId)
+      const productId = product.product_id;
+        //console.log(quantity)
+        //console.log(productId)
       // create an object with the data
-        let productToAdd = {productId: productId, quantity: quantity}
-        addProduct(productToAdd).then(response => response.json().then(response => console.log(response)));
-        // should add a single product to the cart (0) here
-        event.preventDefault();
-        props.addCartItem();
-        alert('Item added to cart successfully!')
+      const productToAdd = {productId: productId, quantity: quantity}
+      addProduct(productToAdd).then(response => {
+          console.log(response)
+          if (response.ok) {
+            console.log(response)
+            dispatch(addCartItem({id: productId, quantity: quantity}))
+            alert('Item added to cart successfully!')
+          } else {
+            console.log(response)
+            throw Error('Item could not be added to cart')
+          }
+        })
     } catch (error) {
       console.log(error)
-      event.preventDefault();
     }  
   } 
 
@@ -91,9 +102,13 @@ export default function ProductSingle(props) {
         </div>
         <div className="ProductInformationContainer">
           <h3 className="ProductName">{product.name}</h3>
-          <h4>{brand}, {product.year}</h4>
-          <h5>{product.score/10}/5, {product.ratings} reviews</h5>
-          <h4>Price: {product.price}$</h4>
+          <p className="ProductInformation">
+            <span className="ProductBrand">{brand}</span>
+            <span className="ProductYear">{product.year}</span>
+            <Ratings ratings={product.score} />
+            <span className="ProductReviews">{product.ratings} reviews</span>
+            <span className="ProductPrice">Price: <em>{product.price}$</em></span>
+          </p>
           <p className="ProductDescription">
             {product.description}
           </p> 
@@ -104,9 +119,9 @@ export default function ProductSingle(props) {
           <form className="ProductAddToCart" onSubmit={submitAddProduct}>
             <div className="FormItem" id="ProductQuantityContainer">
                 <label htmlFor="quantity">Quantity</label>
-                <input type="number" id="quantity" name="quantity" maxLength="4" required onChange={onQuantityChange}/>
+                <input type="number" id="quantity" name="quantity" maxLength="4" required value={productAmount} onChange={onQuantityChange}/>
             </div>
-            <p>Total price: {productAmount ? product.price * productAmount : product.price}$</p>
+            <p>Total price: <span className="ProductTotalPrice">{productAmount ? product.price * productAmount : product.price}$</span></p>
             <div className="FormItem">
               <button className="SubmitButton">Add to cart</button>
             </div>

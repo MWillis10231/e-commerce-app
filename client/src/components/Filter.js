@@ -29,6 +29,7 @@ export default function FilterBar(props) {
         <input
           className="FilterInput"
           id={`Filter${category}`}
+          key={`Filter${category}`}
           name="category"
           type="radio"
           value={index}
@@ -92,7 +93,7 @@ export default function FilterBar(props) {
         <div className="FilterItem">
           <div className="FilterContainer">
             <label htmlFor="RatingMin">Minimum</label>
-            <RatingNumbers />
+            <RatingNumbers name="min"/>
             <input
               className="FilterInput"
               id="RatingMin"
@@ -109,7 +110,7 @@ export default function FilterBar(props) {
           </div>
           <div className="FilterContainer">
             <label htmlFor="RatingMax">Maximum</label>
-            <RatingNumbers />
+            <RatingNumbers name="max"/>
             <input
               className="FilterInput"
               id="RatingMax"

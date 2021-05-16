@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React from "react"
+import Ratings from "./Ratings";
 
 export default function ProductsListItem(props) {
   if (props.data) {
@@ -17,9 +18,9 @@ export default function ProductsListItem(props) {
               {props.data.name}
             </Link>
           </h4>
-          <h5>
-            {props.data.score/10}/5, {props.data.ratings}
-          </h5>
+          <div className="ProductListItemScoreContainer">
+            <Ratings ratings={props.data.score} />
+          </div>
           <p className="Price">${props.data.price}</p>
         </div>
       </div>

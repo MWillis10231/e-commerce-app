@@ -54,7 +54,7 @@ module.exports = app => {
     app.use('/api/customers', customers)
     app.use('/api/products', products)
     app.use('/api/images', images)
-    app.use('/api/cart', requireLogin, cart)
+    app.use('/api/cart', cart)
     app.use('/api/orders', requireLogin, orders)
     app.use('/api/account', account)
     app.get('/api/swagger.json', function(req, res) {

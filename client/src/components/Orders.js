@@ -12,7 +12,6 @@ if (Array.isArray(props.customerOrders)) {
           key={index}
           id={`order${index}`}
           number={index + 1}
-          customerId={props.customerId}
         />
       );
     });

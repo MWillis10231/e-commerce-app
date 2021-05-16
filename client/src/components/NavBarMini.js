@@ -1,16 +1,21 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { resetSearch, selectSearch } from "../features/productSlice";
+import { useDispatch } from "react-redux";
+import { resetSearch } from "../features/productSlice";
 
 export default function NavBarMini(props) {
     const dispatch = useDispatch();
-    const search = useSelector(selectSearch);
-    const category = search.category
+    // bit of a hacky way to get the category only if we are on certain parts of the app
+    let location = useLocation();
+    let category = location.pathname.slice(19)
+    //console.log(typeof category)
     const [active, setActive] = useState(null)
     
     useEffect(() => {
       setActive(document.getElementById(`NavbarMini${category}`))
+      if (category === "") {
+        setActive(null)
+      }
     }, [category])
 
     const productCategories = [

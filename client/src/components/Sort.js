@@ -20,7 +20,7 @@ export default function SortBar(props) {
             onChange={(e) => dispatch(changeSearch({sort: e.target.value,
             sortDesc: null}))}
           ></input>
-          <label for={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
+          <label htmlFor={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
         </div>
         );
     } else {
@@ -34,7 +34,7 @@ export default function SortBar(props) {
             value={sortCategory}
             onChange={(e) => dispatch(changeSearch({sort: null, sortDesc: e.target.value}))}
           ></input>
-          <label for={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
+          <label htmlFor={`Sort${sortCategory}`} className="SortLabel">{sortCategoryNames[index]}</label>
         </div>  
       );
     }

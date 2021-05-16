@@ -1,74 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useRouteMatch, useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { getCart, selectCartContents, calculateCartTotals, deleteCart, selectTotalItems, selectTotalPrice } from "../features/cartSlice";
+import { getAllProducts } from "../features/productSlice";
+import { selectLoggedIn } from "../features/userSlice";
 import CartProduct from "./CartProduct";
 import OrderSummary from "./OrderSummary";
 import Payment from "./Payment";
 
 export default function Cart(props) {
-  const [cart, setCart] = useState("Loading");
-  const [cartUpdated, setCartUpdated] = useState(false);
   const [order, setOrder] = useState('')
+  const dispatch = useDispatch()
 
+  const cart = useSelector(selectCartContents)
+  const totalItems = useSelector(selectTotalItems)
+  const totalPrice = useSelector(selectTotalPrice)
+  const loggedIn = useSelector(selectLoggedIn)
 
   let match = useRouteMatch();
   let history = useHistory();
   let location = useLocation();
 
-  // function to force a cart update (maybe it should update the number near cart)
-  function updateCart() {
-    setCartUpdated(false);
-  }
-
+  // get all Products and get the cart
+  // cart contains the ids of products
   useEffect(() => {
-    if (cartUpdated === false) {
-      const fetchCart = async () => {
-        setCart("Loading");
-        // it needs to include credentials on any request that requires passport otherwise it won't show
-        const cartData = await fetch("/api/cart/", {
-          credentials: "include",
-        });
-        const cartContents = await cartData.json();
-        setCart(cartContents);
-        if (Array.isArray(cartContents.items)) {
-          props.updateCart(cartContents.items.length);
-        } else props.updateCart(0);
-      };
-      fetchCart();
-      setCartUpdated(true);
-    }
-  }, [cartUpdated, props]);
+    dispatch(getCart())
+    dispatch(getAllProducts())
+    dispatch(calculateCartTotals())
+  }, [dispatch])
 
   let cartContents;
   let cartButton;
-
-  let totalItems = 0;
-
-  //this is a bit inefficient, because we are fetching now and then fetching again in each CartProduct
-  async function fetchProductPrice(id) {
-    const fetchProduct = await fetch(
-      `/api/products/${id}`
-    );
-    const product = await fetchProduct.json();
-    return product.price;
-  };
-
-  // this is a bit of a silly way to update the price I'm sure
-  const [total, setTotal] = useState(0)
-
-  useEffect(() => {
-    if (Array.isArray(cart.items)) {
-      let newTotal = 0
-      cart.items.forEach(async function(item) { 
-        const price = await fetchProductPrice(item.id);
-        const priceNumber = parseInt(price) * item.quantity;
-        newTotal += priceNumber
-        setTotal(newTotal)
-        })
-    } else {
-      setTotal(0)
-    }
-  }, [cart.items])
 
   if (cart.items === "no cart") {
     cartContents = "You have no cart. Please add something to create one";
@@ -76,7 +39,7 @@ export default function Cart(props) {
     cartContents = "Cart is empty. Please add something to your cart";
   } else if (Array.isArray(cart.items)) {
     // first updates the quantity total, second maps each to an individual cartItem
-    cart.items.forEach(item => totalItems += item.quantity);
+    //dispatch(calculateCartTotals({totalQuantity: quantity, totalPrice: price}))
     cartContents = cart.items.map(function (cartItem, index) {
       return (
         <CartProduct
@@ -84,29 +47,29 @@ export default function Cart(props) {
           quantity={cartItem.quantity}
           key={index}
           number={index + 1}
-          updateCart={updateCart}
         />
       );
     });
   } else {
-    cartContents = "Something went wrong, please try again later";
+    cartContents = "No cart could be found";
   }
 
   // if there's stuff in the cart and you're logged in, then show the button to proceed
-  if (Array.isArray(cart.items) && props.loggedIn) {
+  if (Array.isArray(cart.items) && loggedIn) {
     cartButton = (
       <Link to={`${match.path}/payment`}>
         <button>Add payment details</button>
       </Link>
     );
-  } else if (props.loggedIn) {
+  } else if (loggedIn) {
 
   } else {
     cartButton = <p>Please <Link to="/login">sign in</Link> or <Link to="/register">register</Link> to complete your order</p>
   }
 
 
-  async function deleteCart() {
+  async function removeCart() {
+    dispatch(deleteCart)
     const response = await fetch(
       `/api/cart/${cart.id}/delete/`,
       {
@@ -132,8 +95,7 @@ export default function Cart(props) {
     console.log(orderData.success);
     if (orderData.success) {
       history.push(`${match.path}/success`);
-      deleteCart();
-      setCartUpdated(false);
+      removeCart();
       setOrder(orderData)
       console.log(order)
     } else {
@@ -174,7 +136,7 @@ export default function Cart(props) {
               </tr>
             <tr>
               <td>{totalItems}</td>
-              <td>${total}</td>
+              <td>${totalPrice}</td>
             </tr>
           </table>
           {cartButton}
@@ -194,7 +156,7 @@ export default function Cart(props) {
         </Route>
         <Route path={`${match.path}/success`} exact>
           <p>Order complete! Here is a summary of your order:</p>
-          <OrderSummary customerId={props.userId}/>
+          <OrderSummary />
           <Link to="/profile">View all orders</Link>
           <Link to="/">Return home</Link>
         </Route>

@@ -33,8 +33,16 @@ button:disabled {
   background-color: #f5848e;
 }
 
-h2, h3, h4, h5, h6, p {
+h2, h3, h4, h5, h6, p, input, figcaption, a, li, label {
   color: #2e1b1c;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+p, button, input, figcaption, a, li, label, th, td {
+  font-family: 'Noto Sans', sans-serif;
 }
 
 /* NavBar */
@@ -56,8 +64,27 @@ h2, h3, h4, h5, h6, p {
   color: white;
 }
 
+.NavBarTitle {
+  width: 20.59%;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.NavBarTitle figure {
+  width: 5rem;
+  height: 5rem;
+  margin: 0;
+}
+
+.NavBarTitle img {
+  width: 100%;
+  height: 100%;
+}
+
 .Nav-Profile {
-  width: 30%;
+  width: 20.59%;
   margin: 0;
   display: flex;
   flex-direction: row;
@@ -85,18 +112,21 @@ h2, h3, h4, h5, h6, p {
 /* SearchBar */
 
 .SearchBar {
-  width: 60%;
+  width: 58.82%;
   height: 35px;
   display: flex;
 }
 
 .SearchForm {
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .SearchForm a {
-  width: 100%;
-  height: 100%;
+  height: 35px;
+  width: 35px;
 }
 
 .SearchInput {
@@ -111,6 +141,12 @@ h2, h3, h4, h5, h6, p {
   width: 35px;
   padding: 0%;
   background-color: orange;
+}
+
+.SearchButton img {
+  width: 100%;
+  height: 100%;
+  padding: 25%;
 }
 
 /* Mini NavBar */
@@ -235,31 +271,41 @@ input[type="submit" i] {
 .ProductListItemContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
   box-sizing: border-box;
   padding: 1%;
   border-bottom: 1px solid #2e1b1c;
 }
 
+.ProductListItemScoreContainer {
+  width: 50%;
+}
+
 .ProductListItemPictureContainer {
+  display: flex;
   width: 50%;
   box-sizing: border-box;
   padding: 1%;
 }
 
 .ProductListItemPictureContainer figure {
-  width: 75%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
 .ProductListItemPicture {
   height: 200px;
+  width: auto;
 }
 
 .ProductListItemContent {
   padding: 2% 0%;
   width: 50%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ProductsListPageSelector {
@@ -334,6 +380,39 @@ input[type="submit" i] {
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
+}
+
+.ProductBrand {
+  text-decoration: underline black solid;
+  padding-right: 0.5rem;
+}
+
+.ProductYear {
+  padding-left: 0.5rem;
+  border-left: 1px solid black;
+}
+
+.ProductReviews {
+  font-style: italic;
+}
+
+.ProductPrice {
+  display: block;
+  padding-top: 0.5rem;
+  font-weight: lighter;
+}
+
+.ProductPrice em {
+  color: #ed2839;
+  font-weight: bold;
+  font-style: normal;
+  font-size: 2rem;
+  padding-left: 1rem;
+}
+
+.ProductTotalPrice {
+  color: #ed2839;
+  font-weight: bold;
 }
 
 .BackResults {
@@ -451,6 +530,8 @@ input[type="submit" i] {
   margin: 0;
   height: fit-content;
 }
+
+
 
 .DeleteForm {
  display: flex;
@@ -596,10 +677,27 @@ input[type="submit" i] {
   width: 100%;
 }
 
-.OrderDetailed table tr td {
+.OrderDetailed table thead, .OrderDetailed table tbody {
+  width: 100%;
+}
+
+.OrderDetailed table thead tr, .OrderDetailed table tbody tr {
+  width: 100%;
+}
+
+.OrderDetailed table thead tr th, .OrderDetailed table tbody tr td {
   width: 20%;
 }
 
+.OrderDetailed table tbody tr td figure {
+  width: 100%;
+  margin: 0;
+  padding: 2%;
+}
+
+.OrderDetailed table tbody tr td figure img {
+  width: 100%;
+}
 
 /* Text Styles */
 
@@ -633,3 +731,33 @@ input[type="submit" i] {
   color: #ed2839;
 }
 
+/* Star Ratings */
+
+.RatingsContainer {
+  background-color: #ed2839;
+  padding: 3%;
+  margin: 1rem;
+}
+
+.RatingStar {
+  font-size: 25px;
+  color: #fff;
+  background: #fc0;
+  background-clip: unset;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.RatingStarFraction::after {
+  font-size: 25px;
+  content: '★';
+}
+
+.RatingStarEmpty {
+  font-size: 25px;
+  color: #fff;
+  background: #fff;
+  background-clip: unset;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

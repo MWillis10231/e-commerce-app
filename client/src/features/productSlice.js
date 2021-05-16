@@ -7,7 +7,7 @@ const initialState = {
   itemsPerPage: 25,
   category: "All products",
   search: {
-      name: "",
+      name: null,
       category: 0,
       pricemin: 0,
       pricemax: 999,
@@ -201,4 +201,9 @@ export const selectCategory = (state) => state.products.category;
 export const selectSingleProduct = (state, productId) =>
 state.products.data.find((element) => element.product_id === productId);
 
+export const selectProductsByIds = (state, productArray) => {
+  if (state.products.data) {
+    state.products.data.filter((element) => productArray.includes(element.id))
+  }
+}
 

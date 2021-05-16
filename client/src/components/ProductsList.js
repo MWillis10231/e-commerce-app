@@ -62,7 +62,7 @@ export default function ProductsList() {
   if (productStatus === "success") {
     content = dividedArray.map(function (value, index) {
       return (
-        <ProductListContainer products={value} displayPage={index} currentPage={page}/>
+        <ProductListContainer products={value} displayPage={index} currentPage={page} key={index}/>
       ) 
     })
   } else if (productStatus === "loading") {

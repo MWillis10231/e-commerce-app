@@ -1,25 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import productImages from "../javascript/productimages";
+import { selectSingleProduct } from "../features/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCart, selectSingleCartItem, removeCartItem, calculateCartTotals } from "../features/cartSlice";
 
 export default function CartProduct(props) {
   //fetches a single product by its ID (passed through props.id)
-  useEffect(() => {
-    if (props.id) {
-      const fetchProduct = async () => {
-        const fetchProduct = await fetch(
-          `/api/products/${props.id}`
-        );
-        const product = await fetchProduct.json();
-        setProduct(product);
-      };
-      fetchProduct();
-    }
-  }, [props.id]);
-
-  // product is assigned into state below, as is the quantity (this is update-able through the cart)
-  const [product, setProduct] = useState({});
-  const [quantity, setQuantity] = useState(props.quantity);
+  const product = useSelector(state => selectSingleProduct(state, props.id))
+  const cartItem = useSelector(state => selectSingleCartItem(state, props.id))
+  const [quantity, setQuantity] = useState(cartItem.quantity);
+  
+  const dispatch = useDispatch();
 
   // put request function, takes in the data and assigns it as the body of the request
   async function updateProduct(data = {}) {
@@ -54,9 +45,9 @@ export default function CartProduct(props) {
         updateProduct(productToAdd).then((response) =>
           response.json().then((response) => console.log(response))
         );
-        // should add a single product to the cart (0) here
+        // dispatch to Redux and prevent default
+        dispatch(updateCart({id: productId, quantity: quantity}))
         event.preventDefault();
-        props.updateCart();
       } catch (error) {
         console.log(error);
         event.preventDefault();
@@ -68,9 +59,9 @@ export default function CartProduct(props) {
     // preventDefault stops the onsubmit default getReq, which would GET (incl. putting data in url)
     if (props.id) {
       try {
-        // original quantity is props.quantity, new quantity is a negative version of that
-        let quantity = props.quantity * -1;
-        console.log(quantity);
+        // original quantity is cartItem.quantity, new quantity is a negative version of that
+        let quantity = cartItem.quantity * -1;
+        //console.log(quantity);
         // get productid from the state
         let productId = product.product_id;
         // create an object with the data
@@ -78,9 +69,10 @@ export default function CartProduct(props) {
         updateProduct(productToAdd).then((response) =>
           response.json().then((response) => console.log(response))
         );
-        // should remove a single product to the cart (0) here
+        // dispatch to Redux and prevent default
+        dispatch(removeCartItem({id: productId}))
+        dispatch(calculateCartTotals)
         event.preventDefault();
-        props.updateCart();
       } catch (error) {
         console.log(error);
         event.preventDefault();
@@ -96,17 +88,15 @@ export default function CartProduct(props) {
   // set up the images /brand based on category
   let data;
   let brand;
-  let image;
+  let image
 
   if (product) {
-    // if category is book, or audio/visual, set the "brand" to a person/author/director rather than a company
+    image = `/api/images/${product.image}`
     if (product.category === 1 || product.category === 2) {
-      brand = product.creator;
+      brand = product.creator
     } else {
-      brand = product.company;
+      brand = product.company
     }
-    // set up the image relevant to the category too
-    image = productImages[product.category];
 
     data = (
       <React.Fragment>
