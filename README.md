@@ -59,6 +59,7 @@ I revisited this project to improve the state - my prior implementation was supe
 
 ## Planned Improvements for v3.0:
 
+* Mobile-friendly views
 * More data validation
 * Better sign-up system - maybe with email verification
 * Option to enter an "address" for delivery
