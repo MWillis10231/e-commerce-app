@@ -1,7 +1,10 @@
 {
   "name": "client",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
+  "description": "E-commerce / REST API client app developed as part of the full-stack engineer course on Codecademy.",
+  "author": "MWillis10231",
+  "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "@stripe/react-stripe-js": "^1.4.0",

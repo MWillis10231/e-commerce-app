@@ -1,6 +1,6 @@
 {
   "name": "e-commerce-app",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "E-commerce / REST API app developed as part of the full-stack engineer course on Codecademy.",
   "main": "app.js",
   "engines": {
