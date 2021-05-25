@@ -67,6 +67,7 @@ I also implemented laptop, tablet and mobile views, and a few tests. Next versio
 
 * Editing your profile does nothing at present
 * Smaller mobile views can cause some visual oddities (non-centered items, missing stars etc.)
+* NaN, rounding and visual errors on client side when viewing cart
 
 ## Planned Improvements for v4.0:
 
