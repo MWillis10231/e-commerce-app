@@ -13,7 +13,7 @@ Live view: https://nile-shopping.herokuapp.com/
 ## Libraries/Frameworks/Runtimes
 * PostgreSQL
 * Express
-* React
+* React / Redux
 * Node
 * Stripe
 * Passport
@@ -23,7 +23,7 @@ Live view: https://nile-shopping.herokuapp.com/
 List of features:
 
 * Functioning e-commerce REST API using Express, Node.js and Postgres
-* Front-end rendered through React application
+* Front-end rendered through React application and Redux
 * User registration and log-in via API and Passport
 * Products & user information stored on PostgreSQL database
 * CRUD operations on products
@@ -48,16 +48,23 @@ This was lots of fun. It really helped elucidate how the Front and Backends inte
 
 What I didn't enjoy was the Passport section - this was badly documented and confusing, but I got there in the end. 
 
+## Version 2.0
+
+I revisited this project to improve the state - my prior implementation was super messy. I decided to use Redux, and also clean-up a lot of the application at the same time (UI improvements, logo etc.). In the end it took me a few days, but the app looks a lot better now.
+
 ## Known issues
 
 * Editing your profile does nothing at present
 * It's not at all optimised for mobile (just like real Amazon)
 
-## Planned Improvements:
+## Planned Improvements for v3.0:
 
+* Mobile-friendly views
 * More data validation
 * Better sign-up system - maybe with email verification
 * Option to enter an "address" for delivery
 * SWAGGER API documentation (partially implemented)
+* More and better tests
+* Aria labels
 
 ### Credits
