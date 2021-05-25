@@ -67,7 +67,15 @@ export default function ProductSingle(props) {
   let brand;
 
   function onQuantityChange(event) {
-    setProductAmount(event.target.value)
+    if (event.target.value > 0 && event.target.value < product.stock_amount) {
+      setProductAmount(event.target.value)
+    } else if (event.target.value > product.stock_amount) {
+      // prevents you from entering a value more than there is stock for
+      setProductAmount(product.stock_amount)
+    } else {
+      // to prevent you from entering a value less than 1
+      setProductAmount(1)
+    }
   }
 
   function showBigImage() {
@@ -119,9 +127,9 @@ export default function ProductSingle(props) {
           <form className="ProductAddToCart" onSubmit={submitAddProduct}>
             <div className="FormItem" id="ProductQuantityContainer">
                 <label htmlFor="quantity">Quantity</label>
-                <input type="number" id="quantity" name="quantity" maxLength="4" required value={productAmount} onChange={onQuantityChange}/>
+                <input type="number" id="quantity" name="quantity" maxLength="4" required min="1" max={product.stock_amount} value={productAmount} onChange={onQuantityChange}/>
             </div>
-            <p>Total price: <span className="ProductTotalPrice">{productAmount ? product.price * productAmount : product.price}$</span></p>
+            <p>Total price: <span className="ProductTotalPrice">{productAmount ? (product.price * productAmount).toFixed(2) : product.price}$</span></p>
             <div className="FormItem">
               <button className="SubmitButton">Add to cart</button>
             </div>

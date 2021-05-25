@@ -57,7 +57,6 @@ export default function ProductsList() {
   }
 
   let content
-  //<ProductListContainer products={products}/>
 
   if (productStatus === "success") {
     content = dividedArray.map(function (value, index) {
@@ -91,7 +90,7 @@ export default function ProductsList() {
       <h3>
         {category}
       </h3>
-      <h4>{searchTermText}</h4>
+      <h4 style={{display: searchTermText ? "block" : "none"}}>{searchTermText}</h4>
       {allProducts}
       <h4>{numberOfResults} Results</h4>
       <SortBar />

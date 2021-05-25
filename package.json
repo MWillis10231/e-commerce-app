@@ -8,7 +8,7 @@
     "npm": "6.14.10"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --reporter spec",
     "start": "node app.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
@@ -16,6 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "connect-flash": "^0.1.1",
     "connect-pg-simple": "^6.2.1",
     "cors": "^2.8.5",
@@ -23,6 +25,7 @@
     "express": "^4.17.1",
     "express-promise-router": "^4.0.1",
     "express-session": "^1.17.1",
+    "mocha": "^8.4.0",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",

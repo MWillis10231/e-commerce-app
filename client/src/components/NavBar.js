@@ -65,7 +65,7 @@ export default function NavBar(props) {
             <div className="Nav-Profile">
                 {register}
                 {name}
-                <div className="Nav-Cart"><Link className="NavBarLink" to="/cart">View your cart ({cartItems})</Link></div>
+                <div className="Nav-Cart"><Link className="NavBarLink" to="/cart">Cart ({cartItems})</Link></div>
                 {signInLogOut}
             </div>
         </nav>

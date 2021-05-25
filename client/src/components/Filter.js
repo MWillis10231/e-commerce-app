@@ -1,14 +1,18 @@
 import { useHistory } from "react-router-dom";
 import { Fragment } from "react";
 import RatingNumbers from "./RatingNumbers";
-import React from "react"
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeSearch, selectSearch, resetSearch } from "../features/productSlice";
+import {
+  changeSearch,
+  selectSearch,
+  resetSearch,
+} from "../features/productSlice";
 
 export default function FilterBar(props) {
   // get the search from the state, use dispatch
-  const search = useSelector(selectSearch)
-  const dispatch = useDispatch()
+  const search = useSelector(selectSearch);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const productCategories = [
@@ -34,8 +38,8 @@ export default function FilterBar(props) {
           type="radio"
           value={index}
           onChange={(e) => {
-            history.push(`/products/category/${index}`)
-            dispatch(changeSearch({category: e.target.value}))
+            history.push(`/products/category/${index}`);
+            dispatch(changeSearch({ category: e.target.value }));
           }}
         ></input>
         <label htmlFor={`Filter${category}`}>{category}</label>
@@ -43,57 +47,64 @@ export default function FilterBar(props) {
     );
   });
 
-    const  categoryFilter = (<Fragment>        <h4>Filter by Category</h4>
-      {categoryFilterBoxes}</Fragment>)
-
+  const categoryFilter = (
+    <div className="FilterFormSection" id="FilterFormCategory">
+      {" "}
+      <h4>Category</h4>
+      {categoryFilterBoxes}
+    </div>
+  );
 
   return (
     <div className="FilterBar">
       <h3>Filter Results</h3>
-      <form
-        className="FilterForm"
-        id="filter"
-        name="filter"
-      >
+      <form className="FilterForm" id="filter" name="filter">
         {categoryFilter}
-        <h4>Filter by Price</h4>
-        <div>
-          <div className="FilterContainer">
-            <label htmlFor="PriceMin">Minimum Price</label>
-            <input
-              className="FilterInput"
-              id="PriceMin"
-              name="pricemin"
-              type="number"
-              min="0"
-              maxLength="4"
-              step="1"
-              required
-              value={search.pricemin}
-              onChange={(e) => dispatch(changeSearch({pricemin: e.target.value}))}
-            ></input>
-          </div>
-          <div className="FilterContainer">
-            <label htmlFor="#PriceMax">Maximum Price</label>
-            <input
-              className="FilterInput"
-              id="PriceMax"
-              name="pricemax"
-              type="number"
-              min="1"
-              maxLength="4"
-              step="1"
-              required
-              value={search.pricemax}
-              onChange={(e) => dispatch(changeSearch({pricemax: e.target.value}))}
-            ></input>
+        <div className="FilterFormSection" >
+          <h4>Price</h4>
+          <div>
+            <div className="FilterContainer">
+              <label htmlFor="PriceMin">Minimum Price</label>
+              <input
+                className="FilterInput"
+                id="PriceMin"
+                name="pricemin"
+                type="number"
+                min="0"
+                maxLength="4"
+                step="1"
+                required
+                value={search.pricemin}
+                onChange={(e) =>
+                  dispatch(changeSearch({ pricemin: e.target.value }))
+                }
+              ></input>
+            </div>
+            <div className="FilterContainer">
+              <label htmlFor="#PriceMax">Maximum Price</label>
+              <input
+                className="FilterInput"
+                id="PriceMax"
+                name="pricemax"
+                type="number"
+                min="1"
+                maxLength="4"
+                step="1"
+                required
+                value={search.pricemax}
+                onChange={(e) =>
+                  dispatch(changeSearch({ pricemax: e.target.value }))
+                }
+              ></input>
+            </div>
           </div>
         </div>
-        <h4>Filter by Rating</h4>
+        <div className="FilterFormSection">
+        <h4>Rating</h4>
         <div className="FilterItem">
           <div className="FilterContainer">
             <label htmlFor="RatingMin">Minimum</label>
-            <RatingNumbers name="min"/>
+            <RatingNumbers name="min" />
             <input
               className="FilterInput"
               id="RatingMin"
@@ -105,12 +116,14 @@ export default function FilterBar(props) {
               default="0"
               required
               value={search.minrating}
-              onChange={(e) => dispatch(changeSearch({minrating: e.target.value}))}
+              onChange={(e) =>
+                dispatch(changeSearch({ minrating: e.target.value }))
+              }
             ></input>
           </div>
           <div className="FilterContainer">
             <label htmlFor="RatingMax">Maximum</label>
-            <RatingNumbers name="max"/>
+            <RatingNumbers name="max" />
             <input
               className="FilterInput"
               id="RatingMax"
@@ -122,15 +135,21 @@ export default function FilterBar(props) {
               default="0"
               required
               value={search.maxrating}
-              onChange={(e) => dispatch(changeSearch({maxrating: e.target.value}))}
+              onChange={(e) =>
+                dispatch(changeSearch({ maxrating: e.target.value }))
+              }
             ></input>
           </div>
+          </div>
         </div>
-        <br></br>
-          <button className="FilterButton" type="submit" onClick={() => dispatch(resetSearch())}>
-            Reset Filter
-          </button>
       </form>
+      <button
+          className="FilterButton"
+          type="submit"
+          onClick={() => dispatch(resetSearch())}
+        >
+          Reset Filter
+        </button>
     </div>
   );
 }

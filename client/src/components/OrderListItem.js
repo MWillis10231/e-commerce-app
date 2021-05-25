@@ -52,7 +52,7 @@ export default function OrderListItem(props) {
   let orderNumber = props.data.order_id;
   let orderDate = props.data.date_ordered;
   let deliveryDate = props.data.date_delivered
-  console.log(orderDate)
+  //console.log(orderDate)
   let formattedOrderDate = format(new Date(orderDate), 'dd/MM/yyyy-HH:mm')
   let formattedDeliveryDate = format(new Date(deliveryDate), 'dd/MM/yyyy-HH-mm')
 

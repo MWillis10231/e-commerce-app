@@ -15,7 +15,7 @@ export default function ProductListContainer(props) {
             );
           });
     } else {
-        content = "None"
+        content = <div className="ProductListItemContainer">"None"</div>
     }
 
     // use currentpage and displaypage props to tell if we are on the page, if so display

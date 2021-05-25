@@ -30,12 +30,13 @@ export default function NavBarMini(props) {
       "Health & Beauty",
     ];
 
-    if (active) {
+    // was a way of highlighting categoriers when you're "in" them, but implementation isn't good. if re-introduce, use Redux
+/*     if (active) {
       productCategories.forEach(function (element, index) {
         document.getElementById(`NavbarMini${index}`).style.backgroundColor = "#ed2839"
       }); 
       active.style.backgroundColor = "#d01121"
-    }
+    } */
 
     const links = productCategories.map(function (value, index) {
         return (
