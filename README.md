@@ -52,19 +52,34 @@ What I didn't enjoy was the Passport section - this was badly documented and con
 
 I revisited this project to improve the state - my prior implementation was super messy. I decided to use Redux, and also clean-up a lot of the application at the same time (UI improvements, logo etc.). In the end it took me a few days, but the app looks a lot better now.
 
+## Version 3.0
+
+I noticed version 2 had a small bug, so fixed that (edit profile page didn't redirect properly) and fixed several errors:
+* Fixed Min and Max product ordering errors
+* Fixed several rounding errors
+* Added some data validation for adding items to cart (no more negative values)
+* Fixed search term container not hiding if there's no search
+* Made the scrollbar a permanent fixture to stop jagged loading "animations"
+
+I also implemented laptop, tablet and mobile views, and a few tests. Next version will hopefully include the SWAGGER API and a more well-rounded test suite.
+
 ## Known issues
 
 * Editing your profile does nothing at present
-* It's not at all optimised for mobile (just like real Amazon)
+* Very small mobile views can cause some visual oddities (non-centered items etc.)
 
-## Planned Improvements for v3.0:
+## Planned Improvements for v4.0:
 
-* Mobile-friendly views
-* More data validation
+* Even more data validation
 * Better sign-up system - maybe with email verification
 * Option to enter an "address" for delivery
 * SWAGGER API documentation (partially implemented)
 * More and better tests
+
+## Even more distant improvements:
 * Aria labels
+* An app version with React Native
 
 ### Credits
+
+Lotus picture edited from https://unsplash.com/photos/XabW1JtTJ3M 
