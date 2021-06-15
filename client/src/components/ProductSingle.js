@@ -110,13 +110,13 @@ export default function ProductSingle(props) {
         </div>
         <div className="ProductInformationContainer">
           <h3 className="ProductName">{product.name}</h3>
-          <p className="ProductInformation">
+          <div className="ProductInformation">
             <span className="ProductBrand">{brand}</span>
             <span className="ProductYear">{product.year}</span>
             <Ratings ratings={product.score} />
             <span className="ProductReviews">{product.ratings} reviews</span>
             <span className="ProductPrice">Price: <em>{product.price}$</em></span>
-          </p>
+          </div>
           <p className="ProductDescription">
             {product.description}
           </p> 

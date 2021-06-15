@@ -47,6 +47,7 @@ export default function CartProduct(props) {
         );
         // dispatch to Redux and prevent default
         dispatch(updateCart({id: productId, quantity: quantity}))
+        dispatch(calculateCartTotals())
         event.preventDefault();
       } catch (error) {
         console.log(error);
@@ -71,7 +72,7 @@ export default function CartProduct(props) {
         );
         // dispatch to Redux and prevent default
         dispatch(removeCartItem({id: productId}))
-        dispatch(calculateCartTotals)
+        dispatch(calculateCartTotals())
         event.preventDefault();
       } catch (error) {
         console.log(error);

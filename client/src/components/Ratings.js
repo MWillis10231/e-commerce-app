@@ -24,7 +24,7 @@ export default function Ratings(props) {
         }
         // work out the fraction and fill the star fractionally 
         percent = (starCount - count) * 100
-        console.log(percent)
+        //console.log(percent)
         fractionStarStyle = `linear-gradient(90deg, #fc0 ${percent}%, #fff ${percent}%)`;
     }
 

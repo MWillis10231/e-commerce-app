@@ -45,7 +45,7 @@ export const cartSlice = createSlice({
         // find the right item, then update its contents
         let item = state.data.items.find((item) => item.id === id)
         item.quantity = parseInt(quantity);
-        item.totalPrice = parseInt(item.quantity) * parseInt(item.unitPrice);
+        item.totalPrice = (parseInt(item.quantity) * parseInt(item.unitPrice)).toFixed(2);
     },
     addCartItem(state, action) {
       const { id, quantity } = action.payload;
@@ -55,7 +55,7 @@ export const cartSlice = createSlice({
       }
       //if it exists already, update quantity, otherwise push it
       if (item) {
-        item.quantity = parseInt(quantity);
+        item.quantity = parseInt(item.quantity) + parseInt(quantity);
         item.totalPrice = parseInt(item.quantity) * parseInt(item.unitPrice);
       } else {
         state.data.items.push(action.payload)
@@ -73,7 +73,7 @@ export const cartSlice = createSlice({
           quantity = quantity + parseInt(element.quantity)
         })
         state.totalItems = quantity;
-        state.totalPrice = price;
+        state.totalPrice = price.toFixed(2);
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,

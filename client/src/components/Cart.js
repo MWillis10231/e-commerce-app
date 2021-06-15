@@ -27,7 +27,6 @@ export default function Cart(props) {
   useEffect(() => {
     dispatch(getCart())
     dispatch(getAllProducts())
-    dispatch(calculateCartTotals())
   }, [dispatch])
 
   let cartContents;
@@ -39,7 +38,7 @@ export default function Cart(props) {
     cartContents = "Cart is empty. Please add something to your cart";
   } else if (Array.isArray(cart.items)) {
     // first updates the quantity total, second maps each to an individual cartItem
-    //dispatch(calculateCartTotals({totalQuantity: quantity, totalPrice: price}))
+    dispatch(calculateCartTotals())
     cartContents = cart.items.map(function (cartItem, index) {
       return (
         <CartProduct
