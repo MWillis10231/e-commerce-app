@@ -61,13 +61,19 @@ I noticed version 2 had a small bug, so fixed that (edit profile page didn't red
 * Fixed search term container not hiding if there's no search
 * Made the scrollbar a permanent fixture to stop jagged loading "animations"
 
-I also implemented laptop, tablet and mobile views, and a few tests. Next version will hopefully include the SWAGGER API and a more well-rounded test suite.
+I also implemented laptop, tablet and mobile views, and a few tests. Next major version will hopefully include the SWAGGER API and a more well-rounded test suite.
+
+## Version 3.1
+
+Found some more errors and fixed them:
+* Fixed re-render loop error on the cart
+* Fixed some more rounding and decimal place errors in cart
+* Fixed the total price not updating with additions and deletions from the cart
 
 ## Known issues
 
 * Editing your profile does nothing at present
 * Smaller mobile views can cause some visual oddities (non-centered items, missing stars etc.)
-* NaN, rounding and visual errors on client side when viewing cart
 
 ## Planned Improvements for v4.0:
 
